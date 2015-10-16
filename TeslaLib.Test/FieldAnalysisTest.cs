@@ -16,7 +16,7 @@ namespace TeslaLib.Test
 
         public FieldAnalysisTest()
         {
-            client = new TeslaClient(true);
+            client = new TeslaClient();
         }
         
         [TestMethod]

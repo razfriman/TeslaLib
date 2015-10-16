@@ -15,7 +15,7 @@ namespace TeslaLib.Test
 
         public ResponseParseTest()
         {
-            client = new TeslaClient(true);
+            client = new TeslaClient();
         }
 
         [TestMethod]

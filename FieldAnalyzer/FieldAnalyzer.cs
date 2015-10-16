@@ -22,7 +22,7 @@ namespace FieldAnalyzer
 
         public async Task Start()
         {
-            TeslaClient client = new TeslaClient(true);
+            TeslaClient client = new TeslaClient();
 
             await client.LogInAsync("username", "password");
 

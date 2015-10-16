@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TeslaLib;
 
 namespace TeslaConsole
@@ -11,9 +7,22 @@ namespace TeslaConsole
     {
         public static void Main(string[] args)
         {
-            TeslaConsole console = new TeslaConsole();
+            string clientId = "";
+            string clientSecret = "";
 
-            console.MainAsync().Wait();
+            string email = "";
+            string password = "";            
+
+            TeslaClient client = new TeslaClient(email, clientId, clientSecret);
+
+            client.Login(password);
+
+            var vehicles = client.LoadVehicles();
+
+            foreach (TeslaVehicle car in vehicles)
+            {
+                Console.WriteLine(car.Id + " " + car.VIN);
+            }
 
             Console.ReadKey();
         }
