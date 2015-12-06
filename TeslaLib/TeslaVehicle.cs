@@ -383,12 +383,15 @@ namespace TeslaLib
     public enum VehicleState
     {
         [EnumMember(Value = "Online")]
-        ONLINE,
+        Online,
 
         [EnumMember(Value = "Asleep")]
-        ASLEEP,
+        Asleep,
 
         [EnumMember(Value = "Offline")]
-        OFFLINE,
+        Offline,
+
+        [EnumMember(Value = "Waking")]
+        Waking
     }
 }
