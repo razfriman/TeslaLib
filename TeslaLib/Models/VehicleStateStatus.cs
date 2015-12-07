@@ -68,6 +68,15 @@ namespace TeslaLib.Models
         [JsonProperty(PropertyName = "perf_config")]
         [JsonConverter(typeof(StringEnumConverter))]
         public PerformanceConfiguration PerformanceConfiguration { get; set; }
+
+        // Updates to Tesla API's around December 2015:
+        // Updated firmware from v7.0 (2.7.56) to v7(2.9.12) Some new fields added:
+
+        [JsonProperty(PropertyName = "car_type")]
+        public String CarType { get; set; }   // "s"
+
+        [JsonProperty(PropertyName = "third_row_seats")]
+        public String ThirdRowSeats { get; set; }   // "None"
     }
 
     public enum PanoramicRoofState

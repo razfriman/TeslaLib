@@ -12,10 +12,10 @@ namespace TeslaLib.Models
         public ChargingState ChargingState { get; set; }
 
         [JsonProperty(PropertyName = "battery_current")]
-        public double BatteryCurrent { get; set; }
+        public double? BatteryCurrent { get; set; }
 
         [JsonProperty(PropertyName = "battery_heater_on")]
-        public bool IsBatteryHeaterOn { get; set; }
+        public bool? IsBatteryHeaterOn { get; set; }
 
         [JsonProperty(PropertyName = "battery_level")]
         public int BatteryLevel { get; set; }
@@ -54,16 +54,16 @@ namespace TeslaLib.Models
         public bool IsChargeToMaxRange { get; set; }
 
         [JsonProperty(PropertyName = "charger_actual_current")]
-        public int ChargerActualCurrent { get; set; }
+        public int? ChargerActualCurrent { get; set; }
 
         [JsonProperty(PropertyName = "charger_pilot_current")]
-        public int ChargerPilotCurrent { get; set; }
+        public int? ChargerPilotCurrent { get; set; }
 
         [JsonProperty(PropertyName = "charger_power")]
-        public int ChargerPower { get; set; }
+        public int? ChargerPower { get; set; }
 
         [JsonProperty(PropertyName = "charger_voltage")]
-        public int ChargerVoltage { get; set; }
+        public int? ChargerVoltage { get; set; }           // null when a car is starting to charge.
 
         [JsonProperty(PropertyName = "est_battery_range")]
         public double EstimatedBatteryRange { get; set; }
@@ -78,7 +78,7 @@ namespace TeslaLib.Models
         public int MaxRangeChargeCounter { get; set; }
 
         [JsonProperty(PropertyName = "not_enough_power_to_heat")]
-        public bool IsNotEnoughPowerToHeat { get; set; }
+        public bool? IsNotEnoughPowerToHeat { get; set; }
 
         [JsonProperty(PropertyName = "scheduled_charging_pending")]
         public bool ScheduledChargingPending { get; set; }
@@ -91,6 +91,28 @@ namespace TeslaLib.Models
 
         [JsonProperty(PropertyName = "user_charge_enable_request")]
         public bool? IsUserChargeEnableRequest { get; set; }
+
+        
+        // Updates to Tesla API's around December 2015:
+        // Updated firmware from v7.0 (2.7.56) to v7(2.9.12) Some new fields added:
+		
+        [JsonProperty(PropertyName = "charge_port_latch")]
+        public String ChargePortLatch { get; set; }  // "Engaged"
+
+        [JsonProperty(PropertyName = "charge_current_request")]
+        public int? ChargeCurrentRequest { get; set; }  // amps
+
+        [JsonProperty(PropertyName = "charge_current_request_max")]
+        public int? ChargeCurrentRequestMax { get; set; }  // amps
+
+        [JsonProperty(PropertyName = "managed_charging_active")]
+        public bool? ManagedChargingActive { get; set; }
+
+        [JsonProperty(PropertyName = "managed_charging_user_canceled")]
+        public bool? ManagedChargingUserCanceled { get; set; }
+
+        [JsonProperty(PropertyName = "managed_charging_start_time")]
+        public DateTime? ManagedChargingStartTime { get; set; }
     }
 
     public enum ChargingState

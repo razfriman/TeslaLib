@@ -67,7 +67,7 @@ namespace TeslaLib
 
         public ChargeStateStatus LoadChargeStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/charge_state");
+            var request = new RestRequest("vehicles/{id}/data_request/charge_state");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
@@ -79,7 +79,7 @@ namespace TeslaLib
 
         public ClimateStateStatus LoadClimateStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/climate_state");
+            var request = new RestRequest("vehicles/{id}/data_request/climate_state");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
@@ -91,7 +91,7 @@ namespace TeslaLib
 
         public DriveStateStatus LoadDriveStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/drive_state");
+            var request = new RestRequest("vehicles/{id}/data_request/drive_state");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
@@ -103,7 +103,7 @@ namespace TeslaLib
 
         public GuiSettingsStatus LoadGuiStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/gui_settings");
+            var request = new RestRequest("vehicles/{id}/data_request/gui_settings");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
@@ -115,7 +115,7 @@ namespace TeslaLib
 
         public VehicleStateStatus LoadVehicleStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/vehicle_state");
+            var request = new RestRequest("vehicles/{id}/data_request/vehicle_state");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
@@ -129,16 +129,16 @@ namespace TeslaLib
 
         #region Commands
 
-        public ResultStatus WakeUp()
+        public VehicleState WakeUp()
         {
             var request = new RestRequest("vehicles/{id}/wake_up");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
             var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
+            var data = JsonConvert.DeserializeObject<TeslaVehicle>(json.ToString());
 
-            return data;
+            return data.State;
         }
 
         public ResultStatus OpenChargePortDoor()
@@ -153,7 +153,7 @@ namespace TeslaLib
             return data;
         }
 
-        public ResultStatus SetChargeLimitToStandard(int percent = 50)
+        public ResultStatus SetChargeLimitToStandard()
         {
             var request = new RestRequest("vehicles/{id}/command/charge_standard");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
@@ -164,7 +164,8 @@ namespace TeslaLib
             return data;
         }
 
-        public ResultStatus SetChargeLimitToMaxRange(int percent = 50)
+        // Don't use this very often as it damages the battery.
+        public ResultStatus SetChargeLimitToMaxRange()
         {
             var request = new RestRequest("vehicles/{id}/command/charge_max_range");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
@@ -175,11 +176,12 @@ namespace TeslaLib
             return data;
         }
 
-        public ResultStatus SetChargeLimit(int percent = 50)
+        public ResultStatus SetChargeLimit(int percent)
         {
             var request = new RestRequest("vehicles/{id}/command/set_charge_limit?percent={limit_value}");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
             request.AddParameter("limit_value", percent, ParameterType.UrlSegment);
+
             var response = Client.Post(request);
             var json = JObject.Parse(response.Content)["response"];
             var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
@@ -381,9 +383,15 @@ namespace TeslaLib
     public enum VehicleState
     {
         [EnumMember(Value = "Online")]
-        ONLINE,
+        Online,
 
         [EnumMember(Value = "Asleep")]
-        ASLEEP,
+        Asleep,
+
+        [EnumMember(Value = "Offline")]
+        Offline,
+
+        [EnumMember(Value = "Waking")]
+        Waking
     }
 }
