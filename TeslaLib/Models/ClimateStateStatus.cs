@@ -14,7 +14,7 @@ namespace TeslaLib.Models
         /// Degrees C inside the car
         /// </summary>
         [JsonProperty(PropertyName = "inside_temp")]
-        public double InsideTemperature { get; set; }
+        public double? InsideTemperature { get; set; }
 
         /// <summary>
         /// Degrees C outside of the car
