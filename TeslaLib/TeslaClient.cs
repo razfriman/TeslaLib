@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using TeslaLib.Models;
+using TeslaLib.Converters;
 
 namespace TeslaLib
 {
@@ -12,7 +14,7 @@ namespace TeslaLib
         public string Email { get; }
         public string TeslaClientID { get; }
         public string TeslaClientSecret { get; }
-        public string Token { get; private set; }
+        public string AccessToken { get; private set; }
 
         public RestClient Client { get; set; }
 
@@ -38,7 +40,28 @@ namespace TeslaLib
             }
         }
 
+        public void LoginUsingCache(string password)
+        {
+            LoginToken token = LoginTokenCache.GetToken(Email);
+            if (token != null)
+            {
+                SetToken(token);
+            }
+            else
+            {
+                token = GetLoginToken(password);
+                SetToken(token);
+                LoginTokenCache.AddToken(Email, token);
+            }
+        }
+
         public void Login(string password)
+        {
+            LoginToken token = GetLoginToken(password);
+            SetToken(token);
+        }
+
+        private LoginToken GetLoginToken(string password)
         {
             var loginClient = new RestClient("https://owner-api.teslamotors.com/oauth");
             var request = new RestRequest("token");
@@ -52,11 +75,20 @@ namespace TeslaLib
                 password = password
             });
             var response = loginClient.Post<LoginToken>(request);
-            var token = response.Data.AccessToken;
+            var token = response.Data;
+            return token;
+        }
 
+        internal void SetToken(LoginToken token)
+        {
             var auth = Client.Authenticator as TeslaAuthenticator;
-            auth.Token = token;
-            Token = token;
+            auth.Token = token.AccessToken;
+            AccessToken = token.AccessToken;
+        }
+
+        public void ClearLoginTokenCache()
+        {
+            LoginTokenCache.ClearCache();
         }
 
         public List<TeslaVehicle> LoadVehicles()

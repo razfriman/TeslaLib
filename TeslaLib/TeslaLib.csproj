@@ -56,7 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\UnixTimeConverter.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="LoginTokenCache.cs" />
     <Compile Include="Models\ChargeStateStatus.cs" />
     <Compile Include="Models\ClimateStateStatus.cs" />
     <Compile Include="Models\DriveStateStatus.cs" />
