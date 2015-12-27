@@ -118,18 +118,21 @@ namespace TeslaLib.Models
     public enum ChargingState
     {
         [EnumMember(Value = "Complete")]
-        COMPLETE,
+        Complete,
 
         [EnumMember(Value = "Charging")]
-        CHARGING,
+        Charging,
 
         [EnumMember(Value = "Disconnected")]
-        DISCONNECTED,
+        Disconnected,
 
         [EnumMember(Value = "Pending")]
-        PENDING,
+        Pending,
 
         [EnumMember(Value = "NotCharging")]
-        NOT_CHARGING,
+        NotCharging,
+
+        [EnumMember(Value = "Starting")]
+        Starting,
     }
 }
