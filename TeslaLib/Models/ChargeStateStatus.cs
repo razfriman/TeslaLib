@@ -39,16 +39,17 @@ namespace TeslaLib.Models
         public int ChargeLimitSocStd { get; set; }
 
         [JsonProperty(PropertyName = "charge_port_door_open")]
-        public bool IsChargePortDoorOpen { get; set; }
+        public bool? IsChargePortDoorOpen { get; set; }
 
         [JsonProperty(PropertyName = "charge_rate")]
         public double ChargeRate { get; set; }
 
-        [JsonProperty(PropertyName = "charge_starting_range")]
-        public int? ChargeStartingRange { get; set; }
+        // No longer returned as of Jan 2016.
+        //[JsonProperty(PropertyName = "charge_starting_range")]
+        //public int? ChargeStartingRange { get; set; }
 
-        [JsonProperty(PropertyName = "charge_starting_soc")]
-        public int? ChargeStartingSoc { get; set; }
+        //[JsonProperty(PropertyName = "charge_starting_soc")]
+        //public int? ChargeStartingSoc { get; set; }
 
         [JsonProperty(PropertyName = "charge_to_max_range")]
         public bool IsChargeToMaxRange { get; set; }
@@ -92,10 +93,40 @@ namespace TeslaLib.Models
         [JsonProperty(PropertyName = "user_charge_enable_request")]
         public bool? IsUserChargeEnableRequest { get; set; }
 
-        
+        // Updates to Tesla API's
+        // Updated at an unknown time
+
+        [JsonProperty(PropertyName = "trip_charging")]
+        public bool? IsTripCharging { get; set; }
+
+        [JsonProperty(PropertyName = "charger_phases")]
+        public int? ChargerPhases { get; set; }
+
+        [JsonProperty(PropertyName = "motorized_charge_port")]
+        public bool? IsMotorizedChargePort { get; set; }
+
+        // Seen values "\u003Cinvalid\u003E"
+        [JsonProperty(PropertyName = "fast_charger_type")]
+        public String FastChargerType { get; set; }
+
+        [JsonProperty(PropertyName = "usable_battery_level")]
+        public int? UsableBatteryLevel { get; set; }
+
+        [JsonProperty(PropertyName = "charge_energy_added")]
+        public double? ChargeEnergyAdded { get; set; }
+
+        [JsonProperty(PropertyName = "charge_miles_added_rated")]
+        public double? ChargeMilesAddedRated { get; set; }
+
+        [JsonProperty(PropertyName = "charge_miles_added_ideal")]
+        public double? ChargeMilesAddedIdeal { get; set; }
+
+        [JsonProperty(PropertyName = "eu_vehicle")]
+        public bool IsEUVehicle { get; set; }
+
         // Updates to Tesla API's around December 2015:
         // Updated firmware from v7.0 (2.7.56) to v7(2.9.12) Some new fields added:
-		
+
         [JsonProperty(PropertyName = "charge_port_latch")]
         public String ChargePortLatch { get; set; }  // "Engaged"
 
