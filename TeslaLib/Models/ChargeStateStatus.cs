@@ -165,5 +165,8 @@ namespace TeslaLib.Models
 
         [EnumMember(Value = "Starting")]
         Starting,
+
+        [EnumMember(Value = "Stopped")]
+        Stopped,
     }
 }
