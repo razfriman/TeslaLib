@@ -137,7 +137,8 @@ namespace TeslaLib
             var response = Client.Post(request);
             var json = JObject.Parse(response.Content)["response"];
             var data = JsonConvert.DeserializeObject<TeslaVehicle>(json.ToString());
-
+            if (data == null)
+                return VehicleState.Asleep;
             return data.State;
         }
 

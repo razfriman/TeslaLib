@@ -70,7 +70,7 @@ namespace TeslaLib.Models
         public double EstimatedBatteryRange { get; set; }
 
         [JsonProperty(PropertyName = "fast_charger_present")]
-        public bool IsUsingSupercharger { get; set; }
+        public bool? IsUsingSupercharger { get; set; }
 
         [JsonProperty(PropertyName = "ideal_battery_range")]
         public double IdealBatteryRange { get; set; }
