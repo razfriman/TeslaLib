@@ -23,7 +23,7 @@ namespace TeslaLib.Converters
             long unixTimestamp = serializer.Deserialize<long>(reader);
 
             // Convert the Unix Timestamp to a readable DateTime
-            DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             time = time.AddSeconds(unixTimestamp).ToLocalTime();
 
             return time;

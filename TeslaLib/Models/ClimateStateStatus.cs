@@ -14,7 +14,7 @@ namespace TeslaLib.Models
         /// Degrees C inside the car
         /// </summary>
         [JsonProperty(PropertyName = "inside_temp")]
-        public double InsideTemperature { get; set; }
+        public double? InsideTemperature { get; set; }
 
         /// <summary>
         /// Degrees C outside of the car
@@ -23,13 +23,13 @@ namespace TeslaLib.Models
         public double? OutsideTemperature { get; set; }
 
         /// <summary>
-        /// Degress C of the driver temperature setpoint
+        /// Degrees C of the driver temperature setpoint
         /// </summary>
         [JsonProperty(PropertyName = "driver_temp_setting")]
         public double DriverTemperatureSetting { get; set; }
 
         /// <summary>
-        /// Degress C of the passenger temperature setpoint
+        /// Degrees C of the passenger temperature setpoint
         /// </summary>
         [JsonProperty(PropertyName = "passenger_temp_setting")]
         public double PassengerTemperatureSetting { get; set; }

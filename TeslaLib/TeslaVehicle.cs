@@ -137,7 +137,8 @@ namespace TeslaLib
             var response = Client.Post(request);
             var json = JObject.Parse(response.Content)["response"];
             var data = JsonConvert.DeserializeObject<TeslaVehicle>(json.ToString());
-
+            if (data == null)
+                return VehicleState.Asleep;
             return data.State;
         }
 
@@ -176,11 +177,19 @@ namespace TeslaLib
             return data;
         }
 
-        public ResultStatus SetChargeLimit(int percent)
+        public ResultStatus SetChargeLimit(int stateOfChargePercent)
         {
-            var request = new RestRequest("vehicles/{id}/command/set_charge_limit?percent={limit_value}");
+            var request = new RestRequest("vehicles/{id}/command/set_charge_limit", Method.POST);
             request.AddParameter("id", Id, ParameterType.UrlSegment);
-            request.AddParameter("limit_value", percent, ParameterType.UrlSegment);
+            /*  This throws an exception - RestSharp serializes this out incorrectly, perhaps?  
+            request.AddBody(new
+            {
+                state = "set",
+                percent = socPercent
+            });
+            */
+            request.AddParameter("state", "set");
+            request.AddParameter("percent", stateOfChargePercent.ToString());
 
             var response = Client.Post(request);
             var json = JObject.Parse(response.Content)["response"];

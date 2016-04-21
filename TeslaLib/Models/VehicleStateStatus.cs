@@ -133,7 +133,9 @@ namespace TeslaLib.Models
         BASE,
 
         [EnumMember(Value = "Sport")]
-        SPORT
+        SPORT,
 
+        [EnumMember(Value = "P2")]
+        P2
     }
 }
