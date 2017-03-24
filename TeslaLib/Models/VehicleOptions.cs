@@ -25,6 +25,8 @@ namespace TeslaLib.Models
 
         public int YearModel { get; set; }
 
+        public Model Model { get; set; }
+
         public TrimLevel TrimLevel { get; set; }
 
         public DriverSide DriverSide { get; set; }
@@ -137,6 +139,11 @@ namespace TeslaLib.Models
                 {
                     case "MS":
                         YearModel = int.Parse(value2);
+                        Model = Model.S;
+                        break;
+                    case "MX":   // TODO:  I haven't confirmed this is the actual option code yet.
+                        YearModel = int.Parse(value2);
+                        Model = Model.X;
                         break;
                     case "RE":
                         Region = Extensions.ToEnum<Region>(value2);
@@ -315,5 +322,12 @@ namespace TeslaLib.Models
 
         [EnumMember(Value = "RH")]
         RIGHT_HAND_DRIVE,
+    }
+
+    public enum Model
+    {
+        S,
+        X,
+        Three
     }
 }
