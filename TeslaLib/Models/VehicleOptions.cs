@@ -131,6 +131,9 @@ namespace TeslaLib.Models
                     case "X025":
                         HasPerformancePowertrain = false;
                         break;
+                    case "MDLX":
+                        Model = Model.X;
+                        break;
                 }
 
                 string value2 = option.Substring(2, 2);
@@ -140,10 +143,6 @@ namespace TeslaLib.Models
                     case "MS":
                         YearModel = int.Parse(value2);
                         Model = Model.S;
-                        break;
-                    case "MX":   // TODO:  I haven't confirmed this is the actual option code yet.
-                        YearModel = int.Parse(value2);
-                        Model = Model.X;
                         break;
                     case "RE":
                         Region = Extensions.ToEnum<Region>(value2);
