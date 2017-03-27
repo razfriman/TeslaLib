@@ -73,6 +73,7 @@
     <Compile Include="Converters\VehicleOptionsConverter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ownerapi_endpoints.json" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

@@ -5,6 +5,94 @@ using System.Runtime.Serialization;
 
 namespace TeslaLib.Models
 {
+    /*
+    * {"response":
+    * {"charging_state":"Charging",
+    * "charge_limit_soc":81,
+    * "charge_limit_soc_std":90,
+    * "charge_limit_soc_min":50,
+    * "charge_limit_soc_max":100,
+    * "charge_to_max_range":false,
+    * "battery_heater_on":false,
+    * "not_enough_power_to_heat":false,
+    * "max_range_charge_counter":0,
+    * "fast_charger_present":false,
+    * "fast_charger_type":"<invalid>",
+    * "battery_range":212.05,
+    * "est_battery_range":222.92,
+    * "ideal_battery_range":245.31,
+    * "battery_level":80,
+    * "usable_battery_level":80,
+    * "battery_current":9.2,
+    * "charge_energy_added":11.36,
+    * "charge_miles_added_rated":38.5,
+    * "charge_miles_added_ideal":44.5,
+    * "charger_voltage":242,
+    * "charger_pilot_current":40,
+    * "charger_actual_current":17,
+    * "charger_power":4,
+    * "time_to_full_charge":0.08,
+    * "trip_charging":false,
+    * "charge_rate":9.1,
+    * "charge_port_door_open":true,
+    * "motorized_charge_port":false,
+    * "scheduled_charging_start_time":null,
+    * "scheduled_charging_pending":false,
+    * "user_charge_enable_request":null,
+    * "charge_enable_request":true,
+    * "eu_vehicle":false,
+    * "charger_phases":1,
+    * "charge_port_latch":"Engaged",
+    * "charge_current_request":40,
+    * "charge_current_request_max":40,
+    * "managed_charging_active":false,
+    * "managed_charging_user_canceled":false,
+    * "managed_charging_start_time":null}}
+    * 
+    * 
+    * // While SuperCharging
+    *     "charging_state": "Charging",
+    "battery_current": 206.7,
+    "battery_heater_on": false,
+    "battery_level": 47,
+    "battery_range": 125.08,
+    "charge_enable_request": true,
+    "charge_limit_soc": 95,
+    "charge_limit_soc_max": 100,
+    "charge_limit_soc_min": 50,
+    "charge_limit_soc_std": 90,
+    "charge_port_door_open": true,
+    "charge_rate": 342.6,
+    "charge_to_max_range": true,
+    "charger_actual_current": 0,
+    "charger_pilot_current": 0,
+    "charger_power": 78,
+    "charger_voltage": 377,
+    "est_battery_range": 117.77,
+    "fast_charger_present": true,
+    "ideal_battery_range": 144.71,
+    "max_range_charge_counter": 0,
+    "not_enough_power_to_heat": false,
+    "scheduled_charging_pending": false,
+    "scheduled_charging_start_time": null,
+    "time_to_full_charge": 0.83,
+    "user_charge_enable_request": null,
+    "trip_charging": false,
+    "charger_phases": null,
+    "motorized_charge_port": false,
+    "fast_charger_type": "Tesla",
+    "usable_battery_level": 47,
+    "charge_energy_added": 29.44,
+    "charge_miles_added_rated": 100.0,
+    "charge_miles_added_ideal": 115.5,
+    "eu_vehicle": false,
+    "charge_port_latch": "Engaged",
+    "charge_current_request": 80,
+    "charge_current_request_max": 80,
+    "managed_charging_active": false,
+    "managed_charging_user_canceled": false,
+    "managed_charging_start_time": null
+    */
     public class ChargeStateStatus
     {
         [JsonProperty(PropertyName = "charging_state")]
@@ -84,8 +172,9 @@ namespace TeslaLib.Models
         [JsonProperty(PropertyName = "scheduled_charging_pending")]
         public bool ScheduledChargingPending { get; set; }
 
+        // This is a Unix time value in seconds from 1970 in UTC.
         [JsonProperty(PropertyName = "scheduled_charging_start_time")]
-        public DateTime? ScheduledChargingStartTime { get; set; }
+        public long? ScheduledChargingStartTime { get; set; }
 
         [JsonProperty(PropertyName = "time_to_full_charge")]
         public double? TimeUntilFullCharge { get; set; }
