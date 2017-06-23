@@ -401,6 +401,11 @@ namespace TeslaLib
         Offline,
 
         [EnumMember(Value = "Waking")]
-        Waking
+        Waking,
+
+        // I saw this for half an hour while charging at a Supercharger then while driving.  Perhaps the modem was
+        // offline, or Tesla's web service was offline?
+        [EnumMember(Value = "unknown")]
+        Unknown
     }
 }
