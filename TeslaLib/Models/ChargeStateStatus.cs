@@ -95,9 +95,12 @@ namespace TeslaLib.Models
     */
     public class ChargeStateStatus
     {
+        // Note: the ChargingState started coming back as null around June 2017, coinciding with a significant
+        // Tesla software update.  They apparently upgraded from Linux kernel 2.6.36 to 4.4.35.  They may have changed
+        // a lot of Tesla's software stack too.
         [JsonProperty(PropertyName = "charging_state")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public ChargingState ChargingState { get; set; }
+        public ChargingState? ChargingState { get; set; }
 
         [JsonProperty(PropertyName = "battery_current")]
         public double? BatteryCurrent { get; set; }
