@@ -38,16 +38,23 @@ namespace TeslaLib
 
         private static void WriteCacheFile()
         {
-            using (StreamWriter writer = File.CreateText(CacheFileName))
+            // Note: On an Android device, we either don't have a legal path or we simply can't write anything.
+            // Presumably the same behavior will happen with an IPhone.  Can we use isolated storage on Mono?
+            try
             {
-                JsonSerializer serializer = new JsonSerializer();
-                foreach (var pair in Tokens)
+                using (StreamWriter writer = File.CreateText(CacheFileName))
                 {
-                    writer.WriteLine(pair.Key);
-                    serializer.Serialize(writer, pair.Value);
-                    writer.WriteLine();
+                    JsonSerializer serializer = new JsonSerializer();
+                    foreach (var pair in Tokens)
+                    {
+                        writer.WriteLine(pair.Key);
+                        serializer.Serialize(writer, pair.Value);
+                        writer.WriteLine();
+                    }
                 }
             }
+            catch (UnauthorizedAccessException)
+            { }
         }
 
         public static LoginToken GetToken(String emailAddress)
