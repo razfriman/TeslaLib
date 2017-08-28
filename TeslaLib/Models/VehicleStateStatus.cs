@@ -9,6 +9,14 @@ using System.Threading.Tasks;
 
 namespace TeslaLib.Models
 {
+    // As of August 2017, a 2014 Model S returns:
+    // {"response":{"api_version":3,"autopark_state":"unavailable","autopark_state_v2":"unavailable","calendar_supported":true,
+    // "car_type":"s","car_version":"2017.32 9ea02cb","center_display_state":0,"dark_rims":false,"df":0,"dr":0,
+    // "exterior_color":"Red","ft":0,"has_spoiler":true,"locked":true,"notifications_supported":true,"odometer":32490.440953,
+    // "parsed_calendar_supported":true,"perf_config":"P2","pf":0,"pr":0,"rear_seat_heaters":0,"rear_seat_type":0,
+    // "remote_start":false,"remote_start_supported":true,"rhd":false,"roof_color":"None","rt":0,"seat_type":0,
+    // "spoiler_type":"Passive","sun_roof_installed":1,"sun_roof_percent_open":0,"sun_roof_state":"unknown",
+    // "third_row_seats":"None","timestamp":1503881911969,"valet_mode":false,"vehicle_name":"Hope Bringer","wheel_type":"Base19"}}
     public class VehicleStateStatus
     {
 
@@ -77,6 +85,16 @@ namespace TeslaLib.Models
 
         [JsonProperty(PropertyName = "third_row_seats")]
         public String ThirdRowSeats { get; set; }   // "None"
+
+        // Fields that exist as of August 2017:
+
+        [JsonProperty(PropertyName = "odometer")]
+        public Double Odometer { get; set; }  // Value is in miles, regardless of the car's UI settings.
+
+        // Note: We should use the TeslaColor enum here, but this returns values like "Red" vs. "MULTICOAT_RED"
+        [JsonProperty(PropertyName = "exterior_color")]
+        //[JsonConverter(typeof(StringEnumConverter))]
+        public /*TeslaColor*/String ExteriorColor { get; set; }
     }
 
     public enum PanoramicRoofState
@@ -93,7 +111,7 @@ namespace TeslaLib.Models
         [EnumMember(Value = "Close")]
         CLOSE,
 
-        [EnumMember(Value = "MOve")]
+        [EnumMember(Value = "Move")]
         MOVE,
 
         [EnumMember(Value = "Unknown")]
