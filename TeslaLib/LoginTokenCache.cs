@@ -14,7 +14,8 @@ namespace TeslaLib
         private static readonly TimeSpan ExpirationTimeWindow = TimeSpan.FromDays(1);
 
         private static Dictionary<String, LoginToken> Tokens = new Dictionary<String, LoginToken>();
-        private static bool haveReadCacheFile = false;
+        private static volatile bool haveReadCacheFile = false;
+        private static Object cacheLock = new Object();
 
         private static void ReadCacheFile()
         {
@@ -59,39 +60,48 @@ namespace TeslaLib
 
         public static LoginToken GetToken(String emailAddress)
         {
-            if (!haveReadCacheFile)
+            lock (cacheLock)
             {
-                ReadCacheFile();
-                haveReadCacheFile = true;
-            }
+                if (!haveReadCacheFile)
+                {
+                    ReadCacheFile();
+                    haveReadCacheFile = true;
+                }
 
-            LoginToken token;
-            if (!Tokens.TryGetValue(emailAddress, out token))
-            {
-                return null;
-            }
+                LoginToken token;
+                if (!Tokens.TryGetValue(emailAddress, out token))
+                {
+                    return null;
+                }
 
-            // Ensure the LoginToken is still valid.
-            DateTime expirationTime = token.CreatedAt.ToLocalTime() + UnixTimeConverter.FromUnixTimeSpan(token.ExpiresIn);
-            if (DateTime.Now + ExpirationTimeWindow >= expirationTime)
-            {
-                Tokens.Remove(emailAddress);
-                WriteCacheFile();
-                token = null;
+                // Ensure the LoginToken is still valid.
+                DateTime expirationTime = token.CreatedAt.ToLocalTime() + UnixTimeConverter.FromUnixTimeSpan(token.ExpiresIn);
+                if (DateTime.Now + ExpirationTimeWindow >= expirationTime)
+                {
+                    Tokens.Remove(emailAddress);
+                    WriteCacheFile();
+                    token = null;
+                }
+                return token;
             }
-            return token;
         }
 
         public static void AddToken(String emailAddress, LoginToken token)
         {
-            Tokens[emailAddress] = token;
-            WriteCacheFile();
+            lock (cacheLock)
+            {
+                Tokens[emailAddress] = token;
+                WriteCacheFile();
+            }
         }
 
         public static void ClearCache()
         {
-            Tokens.Clear();
-            File.Delete(CacheFileName);
+            lock (cacheLock)
+            {
+                Tokens.Clear();
+                File.Delete(CacheFileName);
+            }
         }
     }
 }
