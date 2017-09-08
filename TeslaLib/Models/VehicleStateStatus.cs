@@ -116,6 +116,14 @@ namespace TeslaLib.Models
 
         [EnumMember(Value = "Unknown")]
         UNKNOWN,
+
+        // As of September 2017, we started seeing "closed" and "moving" as values.
+        [EnumMember(Value = "Closed")]
+        Closed = CLOSE,
+    
+        [EnumMember(Value = "Moving")]
+        Moving = MOVE,
+
     }
 
     public enum WheelType
