@@ -260,5 +260,9 @@ namespace TeslaLib.Models
 
         [EnumMember(Value = "Stopped")]
         Stopped,
+
+        // As of September 2017, we started seeing this.
+        [EnumMember(Value = "NoPower")]
+        NoPower,
     }
 }
