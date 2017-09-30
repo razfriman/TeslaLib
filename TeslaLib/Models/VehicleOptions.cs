@@ -289,8 +289,9 @@ namespace TeslaLib.Models
         PEARL_WHITE,
         
         [EnumMember(Value = "PMR")]
-        MULTICOAT_READ,
-        
+        MULTICOAT_RED,
+        //Red = MULTICOAT_RED,
+
         [EnumMember(Value = "PSR")]
         SIGNATURE_RED,
     }

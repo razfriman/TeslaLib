@@ -6,6 +6,9 @@ using TeslaLib.Converters;
 
 namespace TeslaLib.Models
 {
+    // Values as of August 2017 with a 2014 Model S.  Note the GPS_as_of and timestamp fields.  Looks like
+    // Tesla dropped some digits from a time stamp originally, maybe.
+    // {"response":{"shift_state":null,"speed":null,"power":0,"latitude":47.6506,"longitude":-122.119804,"heading":193,"gps_as_of":1503881736,"timestamp":1503881737541}}
     public class DriveStateStatus
     {
         public DriveStateStatus()
