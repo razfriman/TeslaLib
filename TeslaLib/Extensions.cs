@@ -14,7 +14,7 @@ namespace TeslaLib
 
             if (attr.Length > 0) // a DescriptionAttribute exists; use it
                 return ((EnumMemberAttribute)attr[0]).Value;
-           
+
             string result = enumValue.ToString();
 
             return result;
@@ -28,7 +28,7 @@ namespace TeslaLib
                 var enumMemberAttribute = ((EnumMemberAttribute[])enumType.GetField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true)).Single();
                 if (enumMemberAttribute.Value == str) return (T)Enum.Parse(enumType, name);
             }
-            
+
 
             return default(T);
         }

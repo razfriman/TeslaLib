@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace TeslaLib.Models
 {
     public class VehicleOptions
     {
-
-        public VehicleOptions()
-        {
-
-        }
-
         public VehicleOptions(string optionCodes)
         {
             ParseOptionCodes(optionCodes);
@@ -50,9 +42,9 @@ namespace TeslaLib.Models
         public bool HasHomeLink { get; set; }
 
         public bool HasSatelliteRadio { get; set; }
-        
+
         public bool HasPerformanceExterior { get; set; }
-        
+
         public bool HasPerformancePowertrain { get; set; }
 
         public bool HasThirdRowSeating { get; set; }
@@ -82,11 +74,10 @@ namespace TeslaLib.Models
         {
             // MS01,RENA,TM00,DRLH,PF00,BT85,PBCW,RFPO,WT19,IBMB,IDPB,TR00,SU01,SC01,TP01,AU01,CH00,HP00,PA00,PS00,AD02,X020,X025,X001,X003,X007,X011,X013
 
-            List<string> options = optionCodes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var options = optionCodes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             foreach (string option in options)
             {
-
                 switch (option)
                 {
                     case "X001":
@@ -162,15 +153,15 @@ namespace TeslaLib.Models
                     case "RF":
                         if (value2 == "BC")
                         {
-                            RoofType = Models.RoofType.COLORED;
+                            RoofType = RoofType.COLORED;
                         }
                         else if (value2 == "PO")
                         {
-                            RoofType = Models.RoofType.NONE;
+                            RoofType = RoofType.NONE;
                         }
                         else if (value2 == "BK")
                         {
-                            RoofType = Models.RoofType.BLACK;
+                            RoofType = RoofType.BLACK;
                         }
                         break;
                     case "WT":
@@ -228,7 +219,7 @@ namespace TeslaLib.Models
                         break;
                 }
 
-                string value3 = option.Substring(1,3);
+                string value3 = option.Substring(1, 3);
                 switch (option.Substring(0, 1))
                 {
                     case "P":
@@ -254,7 +245,7 @@ namespace TeslaLib.Models
     {
         [EnumMember(Value = "00")]
         STANDARD,
-        
+
         //[EnumMember(Value = "01")]
         //PERFORMANCE,
 
@@ -287,7 +278,7 @@ namespace TeslaLib.Models
 
         [EnumMember(Value = "PSW")]
         PEARL_WHITE,
-        
+
         [EnumMember(Value = "PMR")]
         MULTICOAT_RED,
         //Red = MULTICOAT_RED,

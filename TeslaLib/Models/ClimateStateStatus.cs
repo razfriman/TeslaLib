@@ -4,12 +4,6 @@ namespace TeslaLib.Models
 {
     public class ClimateStateStatus
     {
-
-        public ClimateStateStatus()
-        {
-
-        }
-
         /// <summary>
         /// Degrees C inside the car
         /// </summary>

@@ -7,15 +7,15 @@ using TeslaLib.Models;
 
 namespace TeslaLib
 {
-    internal static class LoginTokenCache
+    public static class LoginTokenCache
     {
         private const String CacheFileName = "TeslaLoginTokenCache.cache";
         // Make sure the token from the cache is valid for this long.
         private static readonly TimeSpan ExpirationTimeWindow = TimeSpan.FromDays(1);
 
         private static Dictionary<String, LoginToken> Tokens = new Dictionary<String, LoginToken>();
-        private static volatile bool haveReadCacheFile = false;
-        private static Object cacheLock = new Object();
+        private static volatile bool haveReadCacheFile;
+        private static readonly Object cacheLock = new Object();
 
         private static void ReadCacheFile()
         {
@@ -24,7 +24,7 @@ namespace TeslaLib
                 return;
 
             JsonSerializer serializer = new JsonSerializer();
-            using(StreamReader reader = File.OpenText(CacheFileName))
+            using (StreamReader reader = File.OpenText(CacheFileName))
             {
                 JsonReader jsonReader = new JsonTextReader(reader);
                 String emailAddress = null;
