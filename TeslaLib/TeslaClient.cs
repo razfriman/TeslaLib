@@ -58,7 +58,7 @@ namespace TeslaLib
                 client_id = TeslaClientID,
                 client_secret = TeslaClientSecret,
                 email = Email,
-                password = password
+                password
             });
 
             var response = loginClient.Post<LoginToken>(request);

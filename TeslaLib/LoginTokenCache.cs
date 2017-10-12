@@ -13,7 +13,7 @@ namespace TeslaLib
         // Make sure the token from the cache is valid for this long.
         private static readonly TimeSpan ExpirationTimeWindow = TimeSpan.FromDays(1);
 
-        private static Dictionary<String, LoginToken> Tokens = new Dictionary<String, LoginToken>();
+        private static readonly Dictionary<String, LoginToken> Tokens = new Dictionary<String, LoginToken>();
         private static volatile bool haveReadCacheFile;
         private static readonly Object cacheLock = new Object();
 

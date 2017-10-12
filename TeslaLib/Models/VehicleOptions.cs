@@ -151,36 +151,37 @@ namespace TeslaLib.Models
                         BatterySize = int.Parse(value2);
                         break;
                     case "RF":
-                        if (value2 == "BC")
+                        switch (value2)
                         {
-                            RoofType = RoofType.COLORED;
+                            case "BC":
+                                RoofType = RoofType.COLORED;
+                                break;
+                            case "PO":
+                                RoofType = RoofType.NONE;
+                                break;
+                            case "BK":
+                                RoofType = RoofType.BLACK;
+                                break;
                         }
-                        else if (value2 == "PO")
-                        {
-                            RoofType = RoofType.NONE;
-                        }
-                        else if (value2 == "BK")
-                        {
-                            RoofType = RoofType.BLACK;
-                        }
+
                         break;
                     case "WT":
-                        if (value2 == "19")
+                        switch (value2)
                         {
-                            WheelType = Models.WheelType.BASE_19;
+                            case "19":
+                                WheelType = WheelType.BASE_19;
+                                break;
+                            case "21":
+                                WheelType = WheelType.SILVER_21;
+                                break;
+                            case "SP":
+                                WheelType = WheelType.CHARCOAL_21;
+                                break;
+                            case "SG":
+                                WheelType = WheelType.CHARCOAL_PERFORMANCE_21;
+                                break;
                         }
-                        else if (value2 == "21")
-                        {
-                            WheelType = Models.WheelType.SILVER_21;
-                        }
-                        else if (value2 == "SP")
-                        {
-                            WheelType = Models.WheelType.CHARCOAL_21;
-                        }
-                        else if (value2 == "SG")
-                        {
-                            WheelType = Models.WheelType.CHARCOAL_PERFORMANCE_21;
-                        }
+
                         break;
                     case "ID":
                         InteriorDecor = Extensions.ToEnum<InteriorDecor>(value2);
