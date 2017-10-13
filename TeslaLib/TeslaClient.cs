@@ -29,7 +29,7 @@ namespace TeslaLib
 
         public void LoginUsingCache(string password)
         {
-            LoginToken token = LoginTokenCache.GetToken(Email);
+            var token = LoginTokenCache.GetToken(Email);
             if (token != null)
             {
                 SetToken(token);

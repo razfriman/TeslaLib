@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using TeslaLib.Converters;
@@ -42,18 +41,5 @@ namespace TeslaLib.Models
 
     }
 
-    public enum ShiftState
-    {
-        [EnumMember(Value = "D")]
-        DRIVE,
 
-        [EnumMember(Value = "N")]
-        NEUTRAL,
-
-        [EnumMember(Value = "P")]
-        PARK,
-
-        [EnumMember(Value = "R")]
-        REVERSE,
-    }
 }

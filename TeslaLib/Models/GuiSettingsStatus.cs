@@ -1,5 +1,4 @@
-﻿using System.Runtime.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace TeslaLib.Models
@@ -22,14 +21,5 @@ namespace TeslaLib.Models
         [JsonProperty(PropertyName = "gui_range_display")]
         public string RangeDisplay { get; set; }
 
-    }
-
-    public enum TemperatureUnits
-    {
-        [EnumMember(Value = "F")]
-        FAHRENHEIT,
-
-        [EnumMember(Value = "C")]
-        CELSIUS,
     }
 }

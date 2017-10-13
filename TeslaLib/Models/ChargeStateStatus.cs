@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -236,33 +235,5 @@ namespace TeslaLib.Models
 
         [JsonProperty(PropertyName = "managed_charging_start_time")]
         public DateTime? ManagedChargingStartTime { get; set; }
-    }
-
-    public enum ChargingState
-    {
-        [EnumMember(Value = "Complete")]
-        Complete,
-
-        [EnumMember(Value = "Charging")]
-        Charging,
-
-        [EnumMember(Value = "Disconnected")]
-        Disconnected,
-
-        [EnumMember(Value = "Pending")]
-        Pending,
-
-        [EnumMember(Value = "NotCharging")]
-        NotCharging,
-
-        [EnumMember(Value = "Starting")]
-        Starting,
-
-        [EnumMember(Value = "Stopped")]
-        Stopped,
-
-        // As of September 2017, we started seeing this.
-        [EnumMember(Value = "NoPower")]
-        NoPower,
     }
 }

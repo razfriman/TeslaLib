@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace TeslaLib.Models
 {
@@ -231,96 +230,5 @@ namespace TeslaLib.Models
                 }
             }
         }
-    }
-
-    public enum Region
-    {
-        [EnumMember(Value = "NA")]
-        USA,
-
-        [EnumMember(Value = "NC")]
-        CANADA
-    }
-
-    public enum TrimLevel
-    {
-        [EnumMember(Value = "00")]
-        STANDARD,
-
-        //[EnumMember(Value = "01")]
-        //PERFORMANCE,
-
-        [EnumMember(Value = "02")]
-        SIGNATURE_PERFORMANCE
-    }
-
-    public enum TeslaColor
-    {
-        [EnumMember(Value = "BSB")]
-        BLACK,
-
-        [EnumMember(Value = "BCW")]
-        WHITE,
-
-        [EnumMember(Value = "MSS")]
-        SILVER,
-
-        [EnumMember(Value = "MTG")]
-        METALLIC_DOLPHIN_GREY,
-
-        [EnumMember(Value = "MAB")]
-        METALLIC_BROWN,
-
-        [EnumMember(Value = "MMB")]
-        METALLIC_BLUE,
-
-        [EnumMember(Value = "MSG")]
-        METALLIC_GREEN,
-
-        [EnumMember(Value = "PSW")]
-        PEARL_WHITE,
-
-        [EnumMember(Value = "PMR")]
-        MULTICOAT_RED,
-        //Red = MULTICOAT_RED,
-
-        [EnumMember(Value = "PSR")]
-        SIGNATURE_RED,
-    }
-
-    public enum InteriorDecor
-    {
-        [EnumMember(Value = "CF")]
-        CARBON_FIBER,
-
-        [EnumMember(Value = "LW")]
-        LACEWOOD,
-
-        [EnumMember(Value = "OM")]
-        OBECHE_WOOD_MATTE,
-
-        [EnumMember(Value = "OG")]
-        OBECHE_WOOD_GLOSS,
-
-        [EnumMember(Value = "PB")]
-        PIANO_BLACK,
-    }
-
-    public enum DriverSide
-    {
-
-        [EnumMember(Value = "LH")]
-        LEFT_HAND_DRIVE,
-
-        [EnumMember(Value = "RH")]
-        RIGHT_HAND_DRIVE,
-    }
-
-    public enum Model
-    {
-        Unknown,
-        S,
-        X,
-        Three
     }
 }
