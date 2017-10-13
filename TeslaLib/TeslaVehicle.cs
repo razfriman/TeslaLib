@@ -304,6 +304,33 @@ namespace TeslaLib
             return ParseResult<ResultStatus>(response);
         }
 
+        public ResultStatus DisableValetMode() => SetValetMode(false);
+
+        public ResultStatus EnableValetMode(int password) => SetValetMode(true, password);
+
+        public ResultStatus SetValetMode(bool enabled, int password = 0)
+        {
+            var request = new RestRequest("vehicles/{id}/command/set_valet_mode");
+            request.AddParameter("id", Id, ParameterType.UrlSegment);
+            request.AddBody(new
+            {
+                on = enabled,
+                password
+            });
+
+            var response = Client.Post(request);
+            return ParseResult<ResultStatus>(response);
+        }
+
+        public ResultStatus ResetValetPin()
+        {
+            var request = new RestRequest("vehicles/{id}/command/reset_valet_pin");
+            request.AddParameter("id", Id, ParameterType.UrlSegment);
+
+            var response = Client.Post(request);
+            return ParseResult<ResultStatus>(response);
+        }
+
         private T ParseResult<T>(IRestResponse response)
         {
             var json = JObject.Parse(response.Content)["response"];

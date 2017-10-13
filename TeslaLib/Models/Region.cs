@@ -1,10 +1,13 @@
-﻿using System;
+﻿using System.Runtime.Serialization;
+
 namespace TeslaLib.Models
 {
-    public class Region
+    public enum Region
     {
-        public Region()
-        {
-        }
+        [EnumMember(Value = "NA")]
+        USA,
+
+        [EnumMember(Value = "NC")]
+        CANADA
     }
 }

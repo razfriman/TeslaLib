@@ -1,10 +1,22 @@
-﻿using System;
+﻿using System.Runtime.Serialization;
+
 namespace TeslaLib.Models
 {
-    public class InteriorDeco
+    public enum InteriorDecor
     {
-        public InteriorDeco()
-        {
-        }
+        [EnumMember(Value = "CF")]
+        CARBON_FIBER,
+
+        [EnumMember(Value = "LW")]
+        LACEWOOD,
+
+        [EnumMember(Value = "OM")]
+        OBECHE_WOOD_MATTE,
+
+        [EnumMember(Value = "OG")]
+        OBECHE_WOOD_GLOSS,
+
+        [EnumMember(Value = "PB")]
+        PIANO_BLACK,
     }
 }

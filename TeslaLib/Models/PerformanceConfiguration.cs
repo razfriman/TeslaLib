@@ -12,6 +12,5 @@ namespace TeslaLib.Models
 
         [EnumMember(Value = "P2")]
         P2
-    }}
     }
 }
