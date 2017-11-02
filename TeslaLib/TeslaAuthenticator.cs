@@ -7,9 +7,6 @@ namespace TeslaLib
     {
         public string Token { get; set; }
 
-        public void Authenticate(IRestClient client, IRestRequest request)
-        {
-            request.AddHeader("Authorization", $"Bearer {Token}");
-        }
+        public void Authenticate(IRestClient client, IRestRequest request) => request.AddHeader("Authorization", $"Bearer {Token}");
     }
 }
