@@ -4,7 +4,6 @@ namespace TeslaLib.Models
 {
     public class ResultStatus
     {
-
         [JsonProperty(PropertyName = "reason")]
         public string Reason { get; set; }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -11,7 +10,6 @@ using TeslaLib.Models;
 
 namespace TeslaLib
 {
-
     public class TeslaVehicle
     {
 
@@ -71,10 +69,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ChargeStateStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ChargeStateStatus>(response);
         }
 
         public ClimateStateStatus LoadClimateStateStatus()
@@ -83,10 +78,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ClimateStateStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ClimateStateStatus>(response);
         }
 
         public DriveStateStatus LoadDriveStateStatus()
@@ -95,10 +87,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<DriveStateStatus>(json.ToString());
-
-            return data;
+            return ParseResult<DriveStateStatus>(response);
         }
 
         public GuiSettingsStatus LoadGuiStateStatus()
@@ -107,10 +96,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<GuiSettingsStatus>(json.ToString());
-
-            return data;
+            return ParseResult<GuiSettingsStatus>(response);
         }
 
         public VehicleStateStatus LoadVehicleStateStatus()
@@ -119,10 +105,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Get(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<VehicleStateStatus>(json.ToString());
-
-            return data;
+            return ParseResult<VehicleStateStatus>(response);
         }
 
         #endregion
@@ -137,9 +120,7 @@ namespace TeslaLib
             var response = Client.Post(request);
             var json = JObject.Parse(response.Content)["response"];
             var data = JsonConvert.DeserializeObject<TeslaVehicle>(json.ToString());
-            if (data == null)
-                return VehicleState.Asleep;
-            return data.State;
+            return data?.State ?? VehicleState.Asleep;
         }
 
         public ResultStatus OpenChargePortDoor()
@@ -148,21 +129,16 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus SetChargeLimitToStandard()
         {
             var request = new RestRequest("vehicles/{id}/command/charge_standard");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
-            var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
 
-            return data;
+            var response = Client.Post(request);
+            return ParseResult<ResultStatus>(response);
         }
 
         // Don't use this very often as it damages the battery.
@@ -170,11 +146,9 @@ namespace TeslaLib
         {
             var request = new RestRequest("vehicles/{id}/command/charge_max_range");
             request.AddParameter("id", Id, ParameterType.UrlSegment);
-            var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
 
-            return data;
+            var response = Client.Post(request);
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus SetChargeLimit(int stateOfChargePercent)
@@ -192,10 +166,7 @@ namespace TeslaLib
             request.AddParameter("percent", stateOfChargePercent.ToString());
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus StartCharge()
@@ -204,10 +175,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus StopCharge()
@@ -216,10 +184,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus FlashLights()
@@ -228,10 +193,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus HonkHorn()
@@ -240,10 +202,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus UnlockDoors()
@@ -252,10 +211,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus LockDoors()
@@ -264,15 +220,11 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus SetTemperatureSettings(int driverTemp = 17, int passengerTemp = 17)
         {
-
             int TEMP_MAX = 32;
             int TEMP_MIN = 17;
 
@@ -289,10 +241,7 @@ namespace TeslaLib
             request.AddParameter("pass_degC", passengerTemp, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus StartHVAC()
@@ -301,10 +250,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus StopHVAC()
@@ -313,10 +259,7 @@ namespace TeslaLib
             request.AddParameter("id", Id, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus SetPanoramicRoofLevel(PanoramicRoofState roofState, int percentOpen = 0)
@@ -331,10 +274,7 @@ namespace TeslaLib
             }
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
         public ResultStatus RemoteStart(string password)
@@ -344,21 +284,12 @@ namespace TeslaLib
             request.AddParameter("password", password, ParameterType.UrlSegment);
 
             var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
-
-            return data;
+            return ParseResult<ResultStatus>(response);
         }
 
-        public ResultStatus OpenFrontTrunk()
-        {
-            return OpenTrunk("front");
-        }
+        public ResultStatus OpenFrontTrunk() => OpenTrunk("front");
 
-        public ResultStatus OpenRearTrunk()
-        {
-            return OpenTrunk("rear");
-        }
+        public ResultStatus OpenRearTrunk() => OpenTrunk("rear");
 
         public ResultStatus OpenTrunk(string trunkType)
         {
@@ -368,15 +299,46 @@ namespace TeslaLib
             {
                 which_trunk = trunkType
             });
-            var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<ResultStatus>(json.ToString());
 
+            var response = Client.Post(request);
+            return ParseResult<ResultStatus>(response);
+        }
+
+        public ResultStatus DisableValetMode() => SetValetMode(false);
+
+        public ResultStatus EnableValetMode(int password) => SetValetMode(true, password);
+
+        public ResultStatus SetValetMode(bool enabled, int password = 0)
+        {
+            var request = new RestRequest("vehicles/{id}/command/set_valet_mode");
+            request.AddParameter("id", Id, ParameterType.UrlSegment);
+            request.AddBody(new
+            {
+                on = enabled,
+                password
+            });
+
+            var response = Client.Post(request);
+            return ParseResult<ResultStatus>(response);
+        }
+
+        public ResultStatus ResetValetPin()
+        {
+            var request = new RestRequest("vehicles/{id}/command/reset_valet_pin");
+            request.AddParameter("id", Id, ParameterType.UrlSegment);
+
+            var response = Client.Post(request);
+            return ParseResult<ResultStatus>(response);
+        }
+
+        private T ParseResult<T>(IRestResponse response)
+        {
+            var json = JObject.Parse(response.Content)["response"];
+            var data = JsonConvert.DeserializeObject<T>(json.ToString());
             return data;
         }
 
         #endregion
-
 
         public string LoadStreamingValues(string values)
         {
@@ -386,26 +348,5 @@ namespace TeslaLib
             //string response = webClient.DownloadString(Path.Combine(TESLA_SERVER, string.Format("stream/{0}/?values={1}", vehicle.VehicleId, values)));
             //return response;
         }
-
-    }
-
-    public enum VehicleState
-    {
-        [EnumMember(Value = "Online")]
-        Online,
-
-        [EnumMember(Value = "Asleep")]
-        Asleep,
-
-        [EnumMember(Value = "Offline")]
-        Offline,
-
-        [EnumMember(Value = "Waking")]
-        Waking,
-
-        // I saw this for half an hour while charging at a Supercharger then while driving.  Perhaps the modem was
-        // offline, or Tesla's web service was offline?
-        [EnumMember(Value = "unknown")]
-        Unknown
     }
 }

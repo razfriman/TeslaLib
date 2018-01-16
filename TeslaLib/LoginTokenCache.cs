@@ -7,31 +7,33 @@ using TeslaLib.Models;
 
 namespace TeslaLib
 {
-    internal static class LoginTokenCache
+    public static class LoginTokenCache
     {
         private const String CacheFileName = "TeslaLoginTokenCache.cache";
-        // Make sure the token from the cache is valid for this long.
-        private static readonly TimeSpan ExpirationTimeWindow = TimeSpan.FromDays(1);
 
-        private static Dictionary<String, LoginToken> Tokens = new Dictionary<String, LoginToken>();
-        private static volatile bool haveReadCacheFile = false;
-        private static Object cacheLock = new Object();
+        private static readonly TimeSpan ExpirationTimeWindow = TimeSpan.FromDays(1);
+        private static readonly Dictionary<String, LoginToken> Tokens = new Dictionary<String, LoginToken>();
+        private static volatile bool haveReadCacheFile;
+        private static readonly Object cacheLock = new Object();
 
         private static void ReadCacheFile()
         {
             Tokens.Clear();
-            if (!File.Exists(CacheFileName))
-                return;
 
-            JsonSerializer serializer = new JsonSerializer();
-            using(StreamReader reader = File.OpenText(CacheFileName))
+            if (!File.Exists(CacheFileName))
             {
-                JsonReader jsonReader = new JsonTextReader(reader);
-                String emailAddress = null;
+                return;
+            }
+
+            var serializer = new JsonSerializer();
+
+            using (var reader = File.OpenText(CacheFileName))
+            {
+                var jsonReader = new JsonTextReader(reader);
                 while (!reader.EndOfStream)
                 {
-                    emailAddress = reader.ReadLine();
-                    LoginToken token = serializer.Deserialize<LoginToken>(jsonReader);
+                    var emailAddress = reader.ReadLine();
+                    var token = serializer.Deserialize<LoginToken>(jsonReader);
                     Tokens.Add(emailAddress, token);
                 }
             }
@@ -43,9 +45,10 @@ namespace TeslaLib
             // Presumably the same behavior will happen with an IPhone.  Can we use isolated storage on Mono?
             try
             {
-                using (StreamWriter writer = File.CreateText(CacheFileName))
+                using (var writer = File.CreateText(CacheFileName))
                 {
-                    JsonSerializer serializer = new JsonSerializer();
+                    var serializer = new JsonSerializer();
+
                     foreach (var pair in Tokens)
                     {
                         writer.WriteLine(pair.Key);
@@ -68,20 +71,21 @@ namespace TeslaLib
                     haveReadCacheFile = true;
                 }
 
-                LoginToken token;
-                if (!Tokens.TryGetValue(emailAddress, out token))
+                if (!Tokens.TryGetValue(emailAddress, out LoginToken token))
                 {
                     return null;
                 }
 
                 // Ensure the LoginToken is still valid.
-                DateTime expirationTime = token.CreatedAt.ToLocalTime() + UnixTimeConverter.FromUnixTimeSpan(token.ExpiresIn);
+                var expirationTime = token.CreatedAt.ToLocalTime() + UnixTimeConverter.FromUnixTimeSpan(token.ExpiresIn);
+
                 if (DateTime.Now + ExpirationTimeWindow >= expirationTime)
                 {
                     Tokens.Remove(emailAddress);
                     WriteCacheFile();
                     token = null;
                 }
+
                 return token;
             }
         }

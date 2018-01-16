@@ -1,5 +1,4 @@
 ﻿using System;
-using TeslaLib.Converters;
 using Newtonsoft.Json;
 
 namespace TeslaLib.Models

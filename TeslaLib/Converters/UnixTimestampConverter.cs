@@ -1,14 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace TeslaLib.Converters
 {
-    class UnixTimestampConverter: JsonConverter
+    public class UnixTimestampConverter : JsonConverter
     {
-        public override bool CanConvert(Type objectType)
-        {
-            return (objectType == typeof(DateTime));
-        }
+        public override bool CanConvert(Type objectType) => (objectType == typeof(DateTime));
 
         /// <summary>
         /// Convert Unix Timestamp to a DateTime object
@@ -20,19 +17,16 @@ namespace TeslaLib.Converters
         /// <returns></returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            long unixTimestamp = serializer.Deserialize<long>(reader);
+            var unixTimestamp = serializer.Deserialize<long>(reader);
 
             // Convert the Unix Timestamp to a readable DateTime
-            DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var time = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             time = time.AddSeconds(unixTimestamp).ToLocalTime();
 
             return time;
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) => throw new NotImplementedException();
     }
 }
 

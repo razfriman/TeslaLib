@@ -9,15 +9,16 @@ namespace TeslaLib
         public static string GetEnumValue(this Enum enumValue)
         {
             //Look for DescriptionAttributes on the enum field
-            object[] attr = enumValue.GetType().GetField(enumValue.ToString())
+            var attr = enumValue.GetType().GetField(enumValue.ToString())
                 .GetCustomAttributes(typeof(EnumMemberAttribute), false);
 
-            if (attr.Length > 0) // a DescriptionAttribute exists; use it
+            if (attr.Length > 0)
+            { 
+                // a DescriptionAttribute exists; use it
                 return ((EnumMemberAttribute)attr[0]).Value;
-           
-            string result = enumValue.ToString();
+            }
 
-            return result;
+            return enumValue.ToString();
         }
 
         public static T ToEnum<T>(string str)
@@ -26,9 +27,13 @@ namespace TeslaLib
             foreach (var name in Enum.GetNames(enumType))
             {
                 var enumMemberAttribute = ((EnumMemberAttribute[])enumType.GetField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true)).Single();
-                if (enumMemberAttribute.Value == str) return (T)Enum.Parse(enumType, name);
+
+                if (enumMemberAttribute.Value == str)
+                {
+                    return (T)Enum.Parse(enumType, name);
+                }
             }
-            
+
 
             return default(T);
         }

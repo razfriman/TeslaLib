@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using TeslaLib.Models;
-using TeslaLib.Converters;
 
 namespace TeslaLib
 {
-
     public class TeslaClient
     {
         public string Email { get; }
         public string TeslaClientID { get; }
         public string TeslaClientSecret { get; }
         public string AccessToken { get; private set; }
-
         public RestClient Client { get; set; }
 
         public static readonly string BASE_URL = "https://owner-api.teslamotors.com/api/1";
@@ -31,18 +27,9 @@ namespace TeslaLib
             Client.Authenticator = new TeslaAuthenticator();
         }
 
-        public class TeslaAuthenticator : RestSharp.Authenticators.IAuthenticator
-        {
-            public string Token { get; set; }
-            public void Authenticate(IRestClient client, IRestRequest request)
-            {
-                request.AddHeader("Authorization", $"Bearer {Token}");
-            }
-        }
-
         public void LoginUsingCache(string password)
         {
-            LoginToken token = LoginTokenCache.GetToken(Email);
+            var token = LoginTokenCache.GetToken(Email);
             if (token != null)
             {
                 SetToken(token);
@@ -55,25 +42,25 @@ namespace TeslaLib
             }
         }
 
-        public void Login(string password)
-        {
-            LoginToken token = GetLoginToken(password);
-            SetToken(token);
-        }
+        public void Login(string password) => SetToken(GetLoginToken(password));
 
         private LoginToken GetLoginToken(string password)
         {
             var loginClient = new RestClient("https://owner-api.teslamotors.com/oauth");
-            var request = new RestRequest("token");
-            request.RequestFormat = DataFormat.Json;
+            var request = new RestRequest("token")
+            {
+                RequestFormat = DataFormat.Json
+            };
+
             request.AddBody(new
             {
                 grant_type = "password",
                 client_id = TeslaClientID,
                 client_secret = TeslaClientSecret,
                 email = Email,
-                password = password
+                password
             });
+
             var response = loginClient.Post<LoginToken>(request);
             var token = response.Data;
             return token;
@@ -86,10 +73,7 @@ namespace TeslaLib
             AccessToken = token.AccessToken;
         }
 
-        public void ClearLoginTokenCache()
-        {
-            LoginTokenCache.ClearCache();
-        }
+        public void ClearLoginTokenCache() => LoginTokenCache.ClearCache();
 
         public List<TeslaVehicle> LoadVehicles()
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using TeslaLib.Converters;
@@ -11,11 +10,6 @@ namespace TeslaLib.Models
     // {"response":{"shift_state":null,"speed":null,"power":0,"latitude":47.6506,"longitude":-122.119804,"heading":193,"gps_as_of":1503881736,"timestamp":1503881737541}}
     public class DriveStateStatus
     {
-        public DriveStateStatus()
-        {
-
-        }
-
         [JsonProperty(PropertyName = "shift_state")]
         [JsonConverter(typeof(StringEnumConverter))]
         public ShiftState? ShiftState { get; set; }
@@ -47,18 +41,5 @@ namespace TeslaLib.Models
 
     }
 
-    public enum ShiftState
-    {
-        [EnumMember(Value = "D")]
-        DRIVE,
 
-        [EnumMember(Value = "N")]
-        NEUTRAL,
-        
-        [EnumMember(Value = "P")]
-        PARK,
-
-        [EnumMember(Value = "R")]
-        REVERSE,        
-    }
 }

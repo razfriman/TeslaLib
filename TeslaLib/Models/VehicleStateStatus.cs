@@ -1,11 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace TeslaLib.Models
 {
@@ -19,12 +15,6 @@ namespace TeslaLib.Models
     // "third_row_seats":"None","timestamp":1503881911969,"valet_mode":false,"vehicle_name":"Hope Bringer","wheel_type":"Base19"}}
     public class VehicleStateStatus
     {
-
-        public VehicleStateStatus()
-        {
-
-        }
-
         [JsonProperty(PropertyName = "df")]
         public bool IsDriverFrontDoorOpen { get; set; }
 
@@ -95,73 +85,5 @@ namespace TeslaLib.Models
         [JsonProperty(PropertyName = "exterior_color")]
         //[JsonConverter(typeof(StringEnumConverter))]
         public /*TeslaColor*/String ExteriorColor { get; set; }
-    }
-
-    public enum PanoramicRoofState
-    {
-        [EnumMember(Value = "Open")]
-        OPEN,
-
-        [EnumMember(Value = "Comfort")]
-        COMFORT,
-
-        [EnumMember(Value = "Vent")]
-        VENT,
-
-        [EnumMember(Value = "Close")]
-        CLOSE,
-
-        [EnumMember(Value = "Move")]
-        MOVE,
-
-        [EnumMember(Value = "Unknown")]
-        UNKNOWN,
-
-        // As of September 2017, we started seeing "closed" and "moving" as values.
-        [EnumMember(Value = "Closed")]
-        Closed = CLOSE,
-    
-        [EnumMember(Value = "Moving")]
-        Moving = MOVE,
-
-    }
-
-    public enum WheelType
-    {
-
-        [EnumMember(Value = "Base19")]
-        BASE_19,
-
-        [EnumMember(Value = "Silver21")]
-        SILVER_21,
-
-        [EnumMember(Value = "Charcoal21")]
-        CHARCOAL_21,
-
-        CHARCOAL_PERFORMANCE_21
-    }
-
-    public enum RoofType
-    {
-        [EnumMember(Value ="Colored")]
-        COLORED,
-
-        [EnumMember(Value = "None")]
-        NONE,
-
-        [EnumMember(Value = "Black")]
-        BLACK
-    }
-
-    public enum PerformanceConfiguration
-    {
-        [EnumMember(Value = "Base")]
-        BASE,
-
-        [EnumMember(Value = "Sport")]
-        SPORT,
-
-        [EnumMember(Value = "P2")]
-        P2
     }
 }

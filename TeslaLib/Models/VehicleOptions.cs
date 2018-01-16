@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace TeslaLib.Models
 {
     public class VehicleOptions
     {
-
-        public VehicleOptions()
-        {
-
-        }
-
         public VehicleOptions(string optionCodes)
         {
             ParseOptionCodes(optionCodes);
@@ -50,9 +41,9 @@ namespace TeslaLib.Models
         public bool HasHomeLink { get; set; }
 
         public bool HasSatelliteRadio { get; set; }
-        
+
         public bool HasPerformanceExterior { get; set; }
-        
+
         public bool HasPerformancePowertrain { get; set; }
 
         public bool HasThirdRowSeating { get; set; }
@@ -82,11 +73,10 @@ namespace TeslaLib.Models
         {
             // MS01,RENA,TM00,DRLH,PF00,BT85,PBCW,RFPO,WT19,IBMB,IDPB,TR00,SU01,SC01,TP01,AU01,CH00,HP00,PA00,PS00,AD02,X020,X025,X001,X003,X007,X011,X013
 
-            List<string> options = optionCodes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var options = optionCodes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             foreach (string option in options)
             {
-
                 switch (option)
                 {
                     case "X001":
@@ -160,36 +150,37 @@ namespace TeslaLib.Models
                         BatterySize = int.Parse(value2);
                         break;
                     case "RF":
-                        if (value2 == "BC")
+                        switch (value2)
                         {
-                            RoofType = Models.RoofType.COLORED;
+                            case "BC":
+                                RoofType = RoofType.COLORED;
+                                break;
+                            case "PO":
+                                RoofType = RoofType.NONE;
+                                break;
+                            case "BK":
+                                RoofType = RoofType.BLACK;
+                                break;
                         }
-                        else if (value2 == "PO")
-                        {
-                            RoofType = Models.RoofType.NONE;
-                        }
-                        else if (value2 == "BK")
-                        {
-                            RoofType = Models.RoofType.BLACK;
-                        }
+
                         break;
                     case "WT":
-                        if (value2 == "19")
+                        switch (value2)
                         {
-                            WheelType = Models.WheelType.BASE_19;
+                            case "19":
+                                WheelType = WheelType.BASE_19;
+                                break;
+                            case "21":
+                                WheelType = WheelType.SILVER_21;
+                                break;
+                            case "SP":
+                                WheelType = WheelType.CHARCOAL_21;
+                                break;
+                            case "SG":
+                                WheelType = WheelType.CHARCOAL_PERFORMANCE_21;
+                                break;
                         }
-                        else if (value2 == "21")
-                        {
-                            WheelType = Models.WheelType.SILVER_21;
-                        }
-                        else if (value2 == "SP")
-                        {
-                            WheelType = Models.WheelType.CHARCOAL_21;
-                        }
-                        else if (value2 == "SG")
-                        {
-                            WheelType = Models.WheelType.CHARCOAL_PERFORMANCE_21;
-                        }
+
                         break;
                     case "ID":
                         InteriorDecor = Extensions.ToEnum<InteriorDecor>(value2);
@@ -228,7 +219,7 @@ namespace TeslaLib.Models
                         break;
                 }
 
-                string value3 = option.Substring(1,3);
+                string value3 = option.Substring(1, 3);
                 switch (option.Substring(0, 1))
                 {
                     case "P":
@@ -239,96 +230,5 @@ namespace TeslaLib.Models
                 }
             }
         }
-    }
-
-    public enum Region
-    {
-        [EnumMember(Value = "NA")]
-        USA,
-
-        [EnumMember(Value = "NC")]
-        CANADA
-    }
-
-    public enum TrimLevel
-    {
-        [EnumMember(Value = "00")]
-        STANDARD,
-        
-        //[EnumMember(Value = "01")]
-        //PERFORMANCE,
-
-        [EnumMember(Value = "02")]
-        SIGNATURE_PERFORMANCE
-    }
-
-    public enum TeslaColor
-    {
-        [EnumMember(Value = "BSB")]
-        BLACK,
-
-        [EnumMember(Value = "BCW")]
-        WHITE,
-
-        [EnumMember(Value = "MSS")]
-        SILVER,
-
-        [EnumMember(Value = "MTG")]
-        METALLIC_DOLPHIN_GREY,
-
-        [EnumMember(Value = "MAB")]
-        METALLIC_BROWN,
-
-        [EnumMember(Value = "MMB")]
-        METALLIC_BLUE,
-
-        [EnumMember(Value = "MSG")]
-        METALLIC_GREEN,
-
-        [EnumMember(Value = "PSW")]
-        PEARL_WHITE,
-        
-        [EnumMember(Value = "PMR")]
-        MULTICOAT_RED,
-        //Red = MULTICOAT_RED,
-
-        [EnumMember(Value = "PSR")]
-        SIGNATURE_RED,
-    }
-
-    public enum InteriorDecor
-    {
-        [EnumMember(Value = "CF")]
-        CARBON_FIBER,
-
-        [EnumMember(Value = "LW")]
-        LACEWOOD,
-
-        [EnumMember(Value = "OM")]
-        OBECHE_WOOD_MATTE,
-
-        [EnumMember(Value = "OG")]
-        OBECHE_WOOD_GLOSS,
-
-        [EnumMember(Value = "PB")]
-        PIANO_BLACK,
-    }
-
-    public enum DriverSide
-    {
-
-        [EnumMember(Value = "LH")]
-        LEFT_HAND_DRIVE,
-
-        [EnumMember(Value = "RH")]
-        RIGHT_HAND_DRIVE,
-    }
-
-    public enum Model
-    {
-        Unknown,
-        S,
-        X,
-        Three
     }
 }
