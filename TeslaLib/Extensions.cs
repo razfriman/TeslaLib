@@ -34,9 +34,7 @@ namespace TeslaLib
                 }
             }
 
-
             return default(T);
         }
-
     }
 }

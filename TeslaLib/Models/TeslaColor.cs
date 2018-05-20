@@ -30,9 +30,8 @@ namespace TeslaLib.Models
 
         [EnumMember(Value = "PMR")]
         MULTICOAT_RED,
-        //Red = MULTICOAT_RED,
 
         [EnumMember(Value = "PSR")]
-        SIGNATURE_RED,
+        SIGNATURE_RED
     }
 }

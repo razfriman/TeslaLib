@@ -36,8 +36,10 @@ namespace TeslaLib.Models
         public int Heading { get; set; }
 
         [JsonProperty(PropertyName = "gps_as_of")]
-        [JsonConverter(typeof(UnixTimestampConverter))]
-        public DateTime GpsAsOf { get; set; }
+        public long GpsAsOf { get; set; }
+
+        [JsonIgnore]
+        public DateTime GpsAsOfDate => UnixTimeConverter.ToDateTime(GpsAsOf);
 
     }
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RestSharp;
+using System.Security.Authentication;
+using System.Threading.Tasks;
 using TeslaLib.Models;
 
 namespace TeslaLib
@@ -9,25 +8,23 @@ namespace TeslaLib
     public class TeslaClient
     {
         public string Email { get; }
-        public string TeslaClientID { get; }
+        public string TeslaClientId { get; }
         public string TeslaClientSecret { get; }
-        public string AccessToken { get; private set; }
         public RestClient Client { get; set; }
 
-        public static readonly string BASE_URL = "https://owner-api.teslamotors.com/api/1";
-        public static readonly string VERSION = "1.1.0";
+        private const string LoginUrl = "https://owner-api.teslamotors.com/oauth/";
+        private const string BaseUrl = "https://owner-api.teslamotors.com/api/1/";
+        public static readonly string Version = "1.1.0";
 
         public TeslaClient(string email, string teslaClientId, string teslaClientSecret)
         {
             Email = email;
-            TeslaClientID = teslaClientId;
+            TeslaClientId = teslaClientId;
             TeslaClientSecret = teslaClientSecret;
-
-            Client = new RestClient(BASE_URL);
-            Client.Authenticator = new TeslaAuthenticator();
+            Client = new RestClient(BaseUrl);
         }
 
-        public void LoginUsingCache(string password)
+        public async Task LoginUsingCache(string password)
         {
             var token = LoginTokenCache.GetToken(Email);
             if (token != null)
@@ -36,56 +33,49 @@ namespace TeslaLib
             }
             else
             {
-                token = GetLoginToken(password);
+                token = await GetLoginToken(password).ConfigureAwait(false);
                 SetToken(token);
                 LoginTokenCache.AddToken(Email, token);
             }
         }
 
-        public void Login(string password) => SetToken(GetLoginToken(password));
+        public async Task Login(string password) => SetToken(await GetLoginToken(password).ConfigureAwait(false));
 
-        private LoginToken GetLoginToken(string password)
+        private async Task<LoginToken> GetLoginToken(string password)
         {
-            var loginClient = new RestClient("https://owner-api.teslamotors.com/oauth");
-            var request = new RestRequest("token")
-            {
-                RequestFormat = DataFormat.Json
-            };
+            var loginClient = new RestClient(LoginUrl);
 
-            request.AddBody(new
+            var response = await loginClient.PostLoginToken<LoginToken>("token", new
             {
                 grant_type = "password",
-                client_id = TeslaClientID,
+                client_id = TeslaClientId,
                 client_secret = TeslaClientSecret,
                 email = Email,
                 password
-            });
+            }).ConfigureAwait(false);
 
-            var response = loginClient.Post<LoginToken>(request);
-            var token = response.Data;
-            return token;
+            return response;
         }
 
         internal void SetToken(LoginToken token)
         {
-            var auth = Client.Authenticator as TeslaAuthenticator;
-            auth.Token = token.AccessToken;
-            AccessToken = token.AccessToken;
+            if (token == null)
+            {
+                throw new AuthenticationException("Invalid token. Email or password is incorrect");
+            }
+
+            Client.Token = token.AccessToken;
         }
 
         public void ClearLoginTokenCache() => LoginTokenCache.ClearCache();
 
-        public List<TeslaVehicle> LoadVehicles()
+        public async Task<ResponseWrapper<List<TeslaVehicle>>> LoadVehicles()
         {
-            var request = new RestRequest("vehicles");
-            var response = Client.Get(request);
+            var response = await Client.Get<List<TeslaVehicle>>("vehicles").ConfigureAwait(false);
 
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<List<TeslaVehicle>>(json.ToString());
+            response.Data?.ForEach(x => x.Client = Client);
 
-            data.ForEach(x => x.Client = Client);
-
-            return data;
+            return response;
         }
     }
 }
