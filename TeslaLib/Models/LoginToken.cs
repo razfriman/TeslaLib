@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TeslaLib.Converters;
 
 namespace TeslaLib.Models
 {
@@ -9,19 +10,52 @@ namespace TeslaLib.Models
     // {"access_token":64 hex characters,"token_type":"bearer","expires_in":7776000,"created_at":1451181413}
     public class LoginToken
     {
-        [JsonProperty(PropertyName = "access_token")]
-        public string AccessToken { get; set; }
+        /// <summary>
+        /// Gets the access token.
+        /// </summary>
+        [JsonProperty("access_token")]
+        public string AccessToken { get; }
 
-        [JsonProperty(PropertyName = "token_type")]
-        public string TokenType { get; set; }
+        /// <summary>
+        /// Gets the type of the <see cref="AccessToken"/>.
+        /// </summary>
+        [JsonProperty("token_type")]
+        public string TokenType { get; }
 
-        // Returns a DateTime in UTC time.
-        [JsonProperty(PropertyName = "created_at")]
-        public DateTime CreatedAt { get; set; }
+        /// <summary>
+        /// Gets the expiry duration in seconds of the <see cref="AccessToken"/>.
+        /// </summary>
+        [JsonProperty("expires_in")]
+        public long ExpiresIn { get; }
 
-        // This should be a TimeSpan, but we can't deserialize it appropriately.  Instead, this is the number of seconds to add to CreatedAt.
-        // I couldn't get this to convert using the JsonConverter attribute.
-        [JsonProperty(PropertyName = "expires_in")]
-        public long ExpiresIn { get; set; }
+        /// <summary>
+        /// Gets the expiry duration of the <see cref="AccessToken"/>.
+        /// </summary>
+        [JsonIgnore]
+        public TimeSpan ExpiresInTimespan => TimeSpan.FromSeconds(ExpiresIn);
+
+        /// <summary>
+        /// Gets the UTC <see cref="DateTime"/> when the <see cref="AccessToken"/> expires.
+        /// </summary>
+        [JsonIgnore]
+        public DateTime ExpiresUtc => UnixTimeConverter.ToDateTime(CreatedAt + ExpiresIn);
+
+        /// <summary>
+        /// Gets the Epoch timestamp when the <see cref="AccessToken"/> was issued.
+        /// </summary>
+        [JsonProperty("created_at")]
+        public long CreatedAt { get; }
+
+        /// <summary>
+        /// Gets the UTC <see cref="DateTime"/> when the <see cref="AccessToken"/> was issued.
+        /// </summary>
+        [JsonIgnore]
+        public DateTime CreatedUtc => UnixTimeConverter.ToDateTime(CreatedAt);
+
+        /// <summary>
+        /// Gets the refresh token that can be used to acquire a new <see cref="AccessToken"/>.
+        /// </summary>
+        [JsonProperty("refresh_token")]
+        public string RefreshToken { get; }
     }
 }

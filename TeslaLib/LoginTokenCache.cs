@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using TeslaLib.Converters;
 using TeslaLib.Models;
 
 namespace TeslaLib
@@ -71,15 +70,12 @@ namespace TeslaLib
                     haveReadCacheFile = true;
                 }
 
-                if (!Tokens.TryGetValue(emailAddress, out LoginToken token))
+                if (!Tokens.TryGetValue(emailAddress, out var token))
                 {
                     return null;
                 }
 
-                // Ensure the LoginToken is still valid.
-                var expirationTime = token.CreatedAt.ToLocalTime() + UnixTimeConverter.FromUnixTimeSpan(token.ExpiresIn);
-
-                if (DateTime.Now + ExpirationTimeWindow >= expirationTime)
+                if (DateTime.Now + ExpirationTimeWindow >= token.ExpiresUtc)
                 {
                     Tokens.Remove(emailAddress);
                     WriteCacheFile();

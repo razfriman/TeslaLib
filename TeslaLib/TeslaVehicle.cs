@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using RestSharp;
 using TeslaLib.Converters;
 using TeslaLib.Models;
 
@@ -35,7 +34,7 @@ namespace TeslaLib
         public int VehicleId { get; set; }
 
         [JsonProperty(PropertyName = "vin")]
-        public string VIN { get; set; }
+        public string Vin { get; set; }
 
         [JsonProperty(PropertyName = "tokens")]
         public List<string> Tokens { get; set; }
@@ -51,182 +50,122 @@ namespace TeslaLib
 
         #region State and Settings
 
-        public bool LoadMobileEnabledStatus()
+        public async Task<ResponseWrapper<bool>> LoadMobileEnabledStatus()
         {
-            var request = new RestRequest("vehicles/{id}/mobile_enabled");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Get(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = bool.Parse(json.ToString());
-
-            return data;
+            return await Client
+                .Get<bool>($"vehicles/{Id}/mobile_enabled")
+                .ConfigureAwait(false);
         }
 
-        public ChargeStateStatus LoadChargeStateStatus()
+        public async Task<ResponseWrapper<ChargeStateStatus>> LoadChargeStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/data_request/charge_state");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Get(request);
-            return ParseResult<ChargeStateStatus>(response);
+            return await Client
+                .Post<ChargeStateStatus>($"vehicles/{Id}/data_request/charge_state")
+                .ConfigureAwait(false);
         }
 
-        public ClimateStateStatus LoadClimateStateStatus()
+        public async Task<ResponseWrapper<ClimateStateStatus>> LoadClimateStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/data_request/climate_state");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Get(request);
-            return ParseResult<ClimateStateStatus>(response);
+            return await Client
+                .Post<ClimateStateStatus>($"vehicles/{Id}/data_request/climate_state")
+                .ConfigureAwait(false);
         }
 
-        public DriveStateStatus LoadDriveStateStatus()
+        public async Task<ResponseWrapper<DriveStateStatus>> LoadDriveStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/data_request/drive_state");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Get(request);
-            return ParseResult<DriveStateStatus>(response);
+            return await Client
+                .Post<DriveStateStatus>($"vehicles/{Id}/data_request/drive_state")
+                .ConfigureAwait(false);
         }
 
-        public GuiSettingsStatus LoadGuiStateStatus()
+        public async Task<ResponseWrapper<GuiSettingsStatus>> LoadGuiStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/data_request/gui_settings");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Get(request);
-            return ParseResult<GuiSettingsStatus>(response);
+            return await Client
+                .Post<GuiSettingsStatus>($"vehicles/{Id}/data_request/gui_settings")
+                .ConfigureAwait(false);
         }
 
-        public VehicleStateStatus LoadVehicleStateStatus()
+        public async Task<ResponseWrapper<VehicleStateStatus>> LoadVehicleStateStatus()
         {
-            var request = new RestRequest("vehicles/{id}/data_request/vehicle_state");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Get(request);
-            return ParseResult<VehicleStateStatus>(response);
+            return await Client
+                .Post<VehicleStateStatus>($"vehicles/{Id}/data_request/vehicle_state")
+                .ConfigureAwait(false);
         }
 
         #endregion
 
         #region Commands
 
-        public VehicleState WakeUp()
+        public async Task<ResponseWrapper<TeslaVehicle>> WakeUp()
         {
-            var request = new RestRequest("vehicles/{id}/wake_up");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<TeslaVehicle>(json.ToString());
-            return data?.State ?? VehicleState.Asleep;
+            return await Client
+                .Post<TeslaVehicle>($"vehicles/{Id}/wake_up")
+                .ConfigureAwait(false);
         }
 
-        public ResultStatus OpenChargePortDoor()
+        public async Task<ResponseWrapper<ResultStatus>> OpenChargePortDoor()
         {
-            var request = new RestRequest("vehicles/{id}/command/charge_port_door_open");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client
+                .Post<ResultStatus>($"vehicles/{Id}/command/charge_port_door_open")
+                .ConfigureAwait(false);
         }
 
-        public ResultStatus SetChargeLimitToStandard()
+        public async Task<ResponseWrapper<ResultStatus>> SetChargeLimitToStandard()
         {
-            var request = new RestRequest("vehicles/{id}/command/charge_standard");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client
+                .Post<ResultStatus>($"vehicles/{Id}/command/charge_standard")
+                .ConfigureAwait(false);
         }
 
         // Don't use this very often as it damages the battery.
-        public ResultStatus SetChargeLimitToMaxRange()
+        public async Task<ResponseWrapper<ResultStatus>> SetChargeLimitToMaxRange()
         {
-            var request = new RestRequest("vehicles/{id}/command/charge_max_range");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client
+                .Post<ResultStatus>($"vehicles/{Id}/command/charge_max_range")
+                .ConfigureAwait(false);
         }
 
-        public ResultStatus SetChargeLimit(int stateOfChargePercent)
+        public async Task<ResponseWrapper<ResultStatus>> SetChargeLimit(int stateOfChargePercent)
         {
-            var request = new RestRequest("vehicles/{id}/command/set_charge_limit", Method.POST);
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-            /*  This throws an exception - RestSharp serializes this out incorrectly, perhaps?  
-            request.AddBody(new
-            {
-                state = "set",
-                percent = socPercent
-            });
-            */
-            request.AddParameter("state", "set");
-            request.AddParameter("percent", stateOfChargePercent.ToString());
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client
+                .Post<ResultStatus>($"vehicles/{Id}/command/set_charge_limit?state=set&percent={stateOfChargePercent}")
+                .ConfigureAwait(false);
         }
 
-        public ResultStatus StartCharge()
+        public async Task<ResponseWrapper<ResultStatus>> StartCharge()
         {
-            var request = new RestRequest("vehicles/{id}/command/charge_start");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/charge_start").ConfigureAwait(false);
         }
 
-        public ResultStatus StopCharge()
+        public async Task<ResponseWrapper<ResultStatus>> StopCharge()
         {
-            var request = new RestRequest("vehicles/{id}/command/charge_stop");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/charge_stop").ConfigureAwait(false);
         }
 
-        public ResultStatus FlashLights()
+        public async Task<ResponseWrapper<ResultStatus>> FlashLights()
         {
-            var request = new RestRequest("vehicles/{id}/command/flash_lights");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/flash_lights").ConfigureAwait(false);
         }
 
-        public ResultStatus HonkHorn()
+        public async Task<ResponseWrapper<ResultStatus>> HonkHorn()
         {
-            var request = new RestRequest("vehicles/{id}/command/honk_horn");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/honk_horn").ConfigureAwait(false);
         }
 
-        public ResultStatus UnlockDoors()
+        public async Task<ResponseWrapper<ResultStatus>> UnlockDoors()
         {
-            var request = new RestRequest("vehicles/{id}/command/door_unlock");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/door_unlock").ConfigureAwait(false);
         }
 
-        public ResultStatus LockDoors()
+        public async Task<ResponseWrapper<ResultStatus>> LockDoors()
         {
-            var request = new RestRequest("vehicles/{id}/command/door_lock");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/door_lock").ConfigureAwait(false);
         }
 
-        public ResultStatus SetTemperatureSettings(int driverTemp = 17, int passengerTemp = 17)
+        public async Task<ResponseWrapper<ResultStatus>> SetTemperatureSettings(int driverTemp = 17, int passengerTemp = 17)
         {
-            int TEMP_MAX = 32;
-            int TEMP_MIN = 17;
+            var TEMP_MAX = 32;
+            var TEMP_MIN = 17;
 
             driverTemp = Math.Max(driverTemp, TEMP_MIN);
             driverTemp = Math.Min(driverTemp, TEMP_MAX);
@@ -234,108 +173,65 @@ namespace TeslaLib
             passengerTemp = Math.Max(passengerTemp, TEMP_MIN);
             passengerTemp = Math.Min(passengerTemp, TEMP_MAX);
 
-
-            var request = new RestRequest("vehicles/{id}/command/set_temps?driver_temp={driver_degC}&passenger_temp={pass_degC}");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-            request.AddParameter("driver_degC", driverTemp, ParameterType.UrlSegment);
-            request.AddParameter("pass_degC", passengerTemp, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/set_temps?driver_temp={driverTemp}&passenger_temp={passengerTemp}").ConfigureAwait(false);
         }
 
-        public ResultStatus StartHVAC()
+        public async Task<ResponseWrapper<ResultStatus>> StartHvac()
         {
-            var request = new RestRequest("vehicles/{id}/command/auto_conditioning_start");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/auto_conditioning_start").ConfigureAwait(false);
         }
 
-        public ResultStatus StopHVAC()
+        public async Task<ResponseWrapper<ResultStatus>> StopHvac()
         {
-            var request = new RestRequest("vehicles/{id}/command/auto_conditioning_stop");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/auto_conditioning_stop").ConfigureAwait(false);
         }
 
-        public ResultStatus SetPanoramicRoofLevel(PanoramicRoofState roofState, int percentOpen = 0)
+        public async Task<ResponseWrapper<ResultStatus>> SetPanoramicRoofLevel(PanoramicRoofState roofState, int percentOpen = 0)
         {
-            var request = new RestRequest("vehicles/{id}/command/sun_roof_control?state={state}&percent={percent}");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-            request.AddParameter("state", roofState.GetEnumValue(), ParameterType.UrlSegment);
+
+            var uri = $"vehicles/{Id}/command/sun_roof_control?state={roofState.GetEnumValue()}";
 
             if (roofState == PanoramicRoofState.MOVE)
             {
-                request.AddParameter("percent", percentOpen, ParameterType.UrlSegment);
+                uri += $"&percent={percentOpen}";
             }
 
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>(uri).ConfigureAwait(false);
         }
 
-        public ResultStatus RemoteStart(string password)
+        public async Task<ResponseWrapper<ResultStatus>> RemoteStart(string password)
         {
-            var request = new RestRequest("vehicles/{id}/command/remote_start_drive?password={password}");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-            request.AddParameter("password", password, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/remote_start_drive?password={password}").ConfigureAwait(false);
         }
 
-        public ResultStatus OpenFrontTrunk() => OpenTrunk("front");
+        public async Task<ResponseWrapper<ResultStatus>> OpenFrontTrunk() => await OpenTrunk("front").ConfigureAwait(false);
 
-        public ResultStatus OpenRearTrunk() => OpenTrunk("rear");
+        public async Task<ResponseWrapper<ResultStatus>> OpenRearTrunk() => await OpenTrunk("rear").ConfigureAwait(false);
 
-        public ResultStatus OpenTrunk(string trunkType)
+        public async Task<ResponseWrapper<ResultStatus>> OpenTrunk(string trunkType)
         {
-            var request = new RestRequest("vehicles/{id}/command/trunk_open");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-            request.AddBody(new
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/trunk_open", new
             {
                 which_trunk = trunkType
-            });
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            }).ConfigureAwait(false);
         }
 
-        public ResultStatus DisableValetMode() => SetValetMode(false);
+        public async Task<ResponseWrapper<ResultStatus>> DisableValetMode() => await SetValetMode(false).ConfigureAwait(false);
 
-        public ResultStatus EnableValetMode(int password) => SetValetMode(true, password);
+        public async Task<ResponseWrapper<ResultStatus>> EnableValetMode(int password) => await SetValetMode(true, password).ConfigureAwait(false);
 
-        public ResultStatus SetValetMode(bool enabled, int password = 0)
+        public async Task<ResponseWrapper<ResultStatus>> SetValetMode(bool enabled, int password = 0)
         {
-            var request = new RestRequest("vehicles/{id}/command/set_valet_mode");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-            request.AddBody(new
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/set_valet_mode", new
             {
                 on = enabled,
                 password
-            });
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
+            }).ConfigureAwait(false);
         }
 
-        public ResultStatus ResetValetPin()
+        public async Task<ResponseWrapper<ResultStatus>> ResetValetPin()
         {
-            var request = new RestRequest("vehicles/{id}/command/reset_valet_pin");
-            request.AddParameter("id", Id, ParameterType.UrlSegment);
-
-            var response = Client.Post(request);
-            return ParseResult<ResultStatus>(response);
-        }
-
-        private T ParseResult<T>(IRestResponse response)
-        {
-            var json = JObject.Parse(response.Content)["response"];
-            var data = JsonConvert.DeserializeObject<T>(json.ToString());
-            return data;
+            return await Client.Post<ResultStatus>($"vehicles/{Id}/command/reset_valet_pin").ConfigureAwait(false);
         }
 
         #endregion
