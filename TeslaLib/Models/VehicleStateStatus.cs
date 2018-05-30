@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace TeslaLib.Models
@@ -71,19 +69,19 @@ namespace TeslaLib.Models
         // Updated firmware from v7.0 (2.7.56) to v7(2.9.12) Some new fields added:
 
         [JsonProperty(PropertyName = "car_type")]
-        public String CarType { get; set; }   // "s"
+        public string CarType { get; set; }   // "s"
 
         [JsonProperty(PropertyName = "third_row_seats")]
-        public String ThirdRowSeats { get; set; }   // "None"
+        public string ThirdRowSeats { get; set; }   // "None"
 
         // Fields that exist as of August 2017:
 
         [JsonProperty(PropertyName = "odometer")]
-        public Double Odometer { get; set; }  // Value is in miles, regardless of the car's UI settings.
+        public double Odometer { get; set; }  // Value is in miles, regardless of the car's UI settings.
 
         // Note: We should use the TeslaColor enum here, but this returns values like "Red" vs. "MULTICOAT_RED"
         [JsonProperty(PropertyName = "exterior_color")]
         //[JsonConverter(typeof(StringEnumConverter))]
-        public /*TeslaColor*/String ExteriorColor { get; set; }
+        public /*TeslaColor*/string ExteriorColor { get; set; }
     }
 }

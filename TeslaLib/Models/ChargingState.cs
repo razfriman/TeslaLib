@@ -27,6 +27,6 @@ namespace TeslaLib.Models
 
         // As of September 2017, we started seeing this.
         [EnumMember(Value = "NoPower")]
-        NoPower,
+        NoPower
     }
 }

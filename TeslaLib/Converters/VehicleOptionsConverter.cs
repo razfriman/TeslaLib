@@ -6,8 +6,9 @@ namespace TeslaLib.Converters
 {
     public class VehicleOptionsConverter : JsonConverter
     {
-        public override bool CanConvert(Type objectType) => (objectType == typeof(VehicleOptions));
+        public override bool CanConvert(Type objectType) => objectType == typeof(VehicleOptions);
 
+        /// <inheritdoc />
         /// <summary>
         /// Convert the Option Codes into a VehicleOptions instance
         /// </summary>

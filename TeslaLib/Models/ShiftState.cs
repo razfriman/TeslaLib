@@ -5,15 +5,15 @@ namespace TeslaLib.Models
     public enum ShiftState
     {
         [EnumMember(Value = "D")]
-        DRIVE,
+        Drive,
 
         [EnumMember(Value = "N")]
-        NEUTRAL,
+        Neutral,
 
         [EnumMember(Value = "P")]
-        PARK,
+        Park,
 
         [EnumMember(Value = "R")]
-        REVERSE,
+        Reverse
     }
 }

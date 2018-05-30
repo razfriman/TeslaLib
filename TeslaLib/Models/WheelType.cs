@@ -4,16 +4,15 @@ namespace TeslaLib.Models
 {
     public enum WheelType
     {
-
         [EnumMember(Value = "Base19")]
-        BASE_19,
+        Base19,
 
         [EnumMember(Value = "Silver21")]
-        SILVER_21,
+        Silver21,
 
         [EnumMember(Value = "Charcoal21")]
-        CHARCOAL_21,
+        Charcoal21,
 
-        CHARCOAL_PERFORMANCE_21
+        CharcoalPerformance21
     }
 }

@@ -5,29 +5,29 @@ namespace TeslaLib.Models
     public enum PanoramicRoofState
     {
         [EnumMember(Value = "Open")]
-        OPEN,
+        Open,
 
         [EnumMember(Value = "Comfort")]
-        COMFORT,
+        Comfort,
 
         [EnumMember(Value = "Vent")]
-        VENT,
+        Vent,
 
         [EnumMember(Value = "Close")]
-        CLOSE,
+        Close,
 
         [EnumMember(Value = "Move")]
-        MOVE,
+        Move,
 
         [EnumMember(Value = "Unknown")]
-        UNKNOWN,
+        Unknown,
 
         // As of September 2017, we started seeing "closed" and "moving" as values.
         [EnumMember(Value = "Closed")]
-        Closed = CLOSE,
+        Closed = Close,
 
         [EnumMember(Value = "Moving")]
-        Moving = MOVE,
+        Moving = Move
 
     }
 }

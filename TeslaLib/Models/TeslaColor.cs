@@ -5,33 +5,33 @@ namespace TeslaLib.Models
     public enum TeslaColor
     {
         [EnumMember(Value = "BSB")]
-        BLACK,
+        Black,
 
         [EnumMember(Value = "BCW")]
-        WHITE,
+        White,
 
         [EnumMember(Value = "MSS")]
-        SILVER,
+        Silver,
 
         [EnumMember(Value = "MTG")]
-        METALLIC_DOLPHIN_GREY,
+        MetallicDolphinGrey,
 
         [EnumMember(Value = "MAB")]
-        METALLIC_BROWN,
+        MetallicBrown,
 
         [EnumMember(Value = "MMB")]
-        METALLIC_BLUE,
+        MetallicBlue,
 
         [EnumMember(Value = "MSG")]
-        METALLIC_GREEN,
+        MetallicGreen,
 
         [EnumMember(Value = "PSW")]
-        PEARL_WHITE,
+        PearlWhite,
 
         [EnumMember(Value = "PMR")]
-        MULTICOAT_RED,
+        MulticoatRed,
 
         [EnumMember(Value = "PSR")]
-        SIGNATURE_RED
+        SignatureRed
     }
 }

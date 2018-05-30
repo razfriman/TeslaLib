@@ -79,7 +79,6 @@ namespace TeslaLib
             using (var reader = new JsonTextReader(sr))
             {
                 var rawJson = await JObject.LoadAsync(reader).ConfigureAwait(false);
-                rawJson.ToString();
                 JsonConvert.DeserializeObject<Models.LoginToken>(rawJson.ToString());
                 var serializer = JsonSerializer.CreateDefault();
                 serializer.Deserialize<T>(reader);

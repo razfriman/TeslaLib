@@ -5,12 +5,12 @@ namespace TeslaLib.Models
     public enum TrimLevel
     {
         [EnumMember(Value = "00")]
-        STANDARD,
+        Standard,
 
         //[EnumMember(Value = "01")]
-        //PERFORMANCE,
+        //Performance,
 
         [EnumMember(Value = "02")]
-        SIGNATURE_PERFORMANCE
+        SignaturePerformance
     }
 }

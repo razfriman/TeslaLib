@@ -198,7 +198,7 @@ namespace TeslaLib.Models
 
         // Seen values "\u003Cinvalid\u003E"
         [JsonProperty(PropertyName = "fast_charger_type")]
-        public String FastChargerType { get; set; }
+        public string FastChargerType { get; set; }
 
         [JsonProperty(PropertyName = "usable_battery_level")]
         public int? UsableBatteryLevel { get; set; }
@@ -219,7 +219,7 @@ namespace TeslaLib.Models
         // Updated firmware from v7.0 (2.7.56) to v7(2.9.12) Some new fields added:
 
         [JsonProperty(PropertyName = "charge_port_latch")]
-        public String ChargePortLatch { get; set; }  // "Engaged"
+        public string ChargePortLatch { get; set; }  // "Engaged"
 
         [JsonProperty(PropertyName = "charge_current_request")]
         public int? ChargeCurrentRequest { get; set; }  // amps

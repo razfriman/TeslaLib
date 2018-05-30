@@ -5,9 +5,9 @@ namespace TeslaLib.Models
     public enum Region
     {
         [EnumMember(Value = "NA")]
-        USA,
+        Usa,
 
         [EnumMember(Value = "NC")]
-        CANADA
+        Canada
     }
 }

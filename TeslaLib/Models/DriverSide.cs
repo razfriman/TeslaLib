@@ -5,9 +5,9 @@ namespace TeslaLib.Models
     public enum DriverSide
     {
         [EnumMember(Value = "LH")]
-        LEFT_HAND_DRIVE,
+        LeftHandDrive,
 
         [EnumMember(Value = "RH")]
-        RIGHT_HAND_DRIVE,
+        RightHandDrive
     }
 }

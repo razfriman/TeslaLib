@@ -5,18 +5,18 @@ namespace TeslaLib.Models
     public enum InteriorDecor
     {
         [EnumMember(Value = "CF")]
-        CARBON_FIBER,
+        CarbonFiber,
 
         [EnumMember(Value = "LW")]
-        LACEWOOD,
+        Lacewood,
 
         [EnumMember(Value = "OM")]
-        OBECHE_WOOD_MATTE,
+        ObecheWoodMatte,
 
         [EnumMember(Value = "OG")]
-        OBECHE_WOOD_GLOSS,
+        ObecheWoodGloss,
 
         [EnumMember(Value = "PB")]
-        PIANO_BLACK,
+        PianoBlack
     }
 }

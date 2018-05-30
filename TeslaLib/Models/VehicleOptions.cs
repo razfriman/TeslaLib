@@ -61,7 +61,7 @@ namespace TeslaLib.Models
 
         public bool HasTwinChargers { get; set; }
 
-        public bool HasHPWC { get; set; }
+        public bool HasHpwc { get; set; }
 
         public bool HasPaintArmor { get; set; }
 
@@ -156,13 +156,13 @@ namespace TeslaLib.Models
                         switch (value2)
                         {
                             case "BC":
-                                RoofType = RoofType.COLORED;
+                                RoofType = RoofType.Colored;
                                 break;
                             case "PO":
-                                RoofType = RoofType.NONE;
+                                RoofType = RoofType.None;
                                 break;
                             case "BK":
-                                RoofType = RoofType.BLACK;
+                                RoofType = RoofType.Black;
                                 break;
                         }
 
@@ -171,16 +171,16 @@ namespace TeslaLib.Models
                         switch (value2)
                         {
                             case "19":
-                                WheelType = WheelType.BASE_19;
+                                WheelType = WheelType.Base19;
                                 break;
                             case "21":
-                                WheelType = WheelType.SILVER_21;
+                                WheelType = WheelType.Silver21;
                                 break;
                             case "SP":
-                                WheelType = WheelType.CHARCOAL_21;
+                                WheelType = WheelType.Charcoal21;
                                 break;
                             case "SG":
-                                WheelType = WheelType.CHARCOAL_PERFORMANCE_21;
+                                WheelType = WheelType.CharcoalPerformance21;
                                 break;
                         }
 
@@ -207,7 +207,7 @@ namespace TeslaLib.Models
                         HasTwinChargers = int.Parse(value2) > 0;
                         break;
                     case "HP":
-                        HasHPWC = int.Parse(value2) > 0;
+                        HasHpwc = int.Parse(value2) > 0;
                         break;
                     case "PA":
                         HasPaintArmor = int.Parse(value2) > 0;

@@ -5,10 +5,10 @@ namespace TeslaLib.Models
     public enum PerformanceConfiguration
     {
         [EnumMember(Value = "Base")]
-        BASE,
+        Base,
 
         [EnumMember(Value = "Sport")]
-        SPORT,
+        Sport,
 
         [EnumMember(Value = "P2")]
         P2

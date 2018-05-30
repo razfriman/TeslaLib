@@ -5,12 +5,12 @@ namespace TeslaLib.Models
     public enum RoofType
     {
         [EnumMember(Value = "Colored")]
-        COLORED,
+        Colored,
 
         [EnumMember(Value = "None")]
-        NONE,
+        None,
 
         [EnumMember(Value = "Black")]
-        BLACK
+        Black
     }
 }

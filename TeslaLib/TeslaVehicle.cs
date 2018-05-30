@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using TeslaLib.Converters;
 using TeslaLib.Models;
 
@@ -164,14 +163,14 @@ namespace TeslaLib
 
         public async Task<ResponseWrapper<ResultStatus>> SetTemperatureSettings(int driverTemp = 17, int passengerTemp = 17)
         {
-            var TEMP_MAX = 32;
-            var TEMP_MIN = 17;
+            const int tempMax = 32;
+            const int tempMin = 17;
 
-            driverTemp = Math.Max(driverTemp, TEMP_MIN);
-            driverTemp = Math.Min(driverTemp, TEMP_MAX);
+            driverTemp = Math.Max(driverTemp, tempMin);
+            driverTemp = Math.Min(driverTemp, tempMax);
 
-            passengerTemp = Math.Max(passengerTemp, TEMP_MIN);
-            passengerTemp = Math.Min(passengerTemp, TEMP_MAX);
+            passengerTemp = Math.Max(passengerTemp, tempMin);
+            passengerTemp = Math.Min(passengerTemp, tempMax);
 
             return await Client.Post<ResultStatus>($"vehicles/{Id}/command/set_temps?driver_temp={driverTemp}&passenger_temp={passengerTemp}").ConfigureAwait(false);
         }
@@ -191,7 +190,7 @@ namespace TeslaLib
 
             var uri = $"vehicles/{Id}/command/sun_roof_control?state={roofState.GetEnumValue()}";
 
-            if (roofState == PanoramicRoofState.MOVE)
+            if (roofState == PanoramicRoofState.Move)
             {
                 uri += $"&percent={percentOpen}";
             }
