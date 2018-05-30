@@ -10,19 +10,23 @@ namespace TeslaLib
     public class RestClient
     {
         private readonly string _baseUrl;
-
-        public string Token { get; set; }
+        private readonly HttpClientFactory _httpClientFactory;
 
         public RestClient(string baseUrl)
         {
             _baseUrl = baseUrl;
+            _httpClientFactory = new HttpClientFactory();
+        }
+
+        public void SetToken(string token)
+        {
+            _httpClientFactory.Token = token;
         }
 
         public async Task<T> PostLoginToken<T>(string uri, object body = null)
         {
-            using (var client = new HttpClient())
+            using (var client = _httpClientFactory.CreateClient())
             {
-                AddDefaultHeaders(client);
                 var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(_baseUrl + uri, content).ConfigureAwait(false);
                 return await ProcessResponseStream<T>(response).ConfigureAwait(false);
@@ -31,9 +35,8 @@ namespace TeslaLib
 
         public async Task<ResponseWrapper<T>> Post<T>(string uri, object body = null)
         {
-            using (var client = new HttpClient())
+            using (var client = _httpClientFactory.CreateClient())
             {
-                AddDefaultHeaders(client);
                 var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(_baseUrl + uri, content).ConfigureAwait(false);
                 return await ProcessResponse<T>(response).ConfigureAwait(false);
@@ -42,9 +45,8 @@ namespace TeslaLib
 
         public async Task<ResponseWrapper<T>> Get<T>(string uri)
         {
-            using (var client = new HttpClient())
+            using (var client = _httpClientFactory.CreateClient())
             {
-                AddDefaultHeaders(client);
                 var response = await client.GetAsync(_baseUrl + uri).ConfigureAwait(false);
                 return await ProcessResponse<T>(response).ConfigureAwait(false);
             }
@@ -68,18 +70,6 @@ namespace TeslaLib
             }
 
             return result;
-        }
-
-        private void AddDefaultHeaders(HttpClient client)
-        {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            client.DefaultRequestHeaders.Add("User-Agent", "TeslaLib C# Library");
-
-            if (!string.IsNullOrEmpty(Token))
-            {
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Token}");
-            }
         }
 
         private static async Task<T> ProcessResponseStream<T>(HttpResponseMessage response)

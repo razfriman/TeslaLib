@@ -8,17 +8,12 @@ namespace TeslaLib
     {
         public static string GetEnumValue(this Enum enumValue)
         {
-            //Look for DescriptionAttributes on the enum field
             var attr = enumValue.GetType().GetField(enumValue.ToString())
                 .GetCustomAttributes(typeof(EnumMemberAttribute), false);
 
-            if (attr.Length > 0)
-            { 
-                // a DescriptionAttribute exists; use it
-                return ((EnumMemberAttribute)attr[0]).Value;
-            }
-
-            return enumValue.ToString();
+            return attr.Length > 0 
+                ? ((EnumMemberAttribute)attr[0]).Value 
+                : enumValue.ToString();
         }
 
         public static T ToEnum<T>(string str)

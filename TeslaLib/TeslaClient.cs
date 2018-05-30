@@ -12,9 +12,9 @@ namespace TeslaLib
         public string TeslaClientSecret { get; }
         public RestClient Client { get; set; }
 
-        private const string LoginUrl = "https://owner-api.teslamotors.com/oauth/";
-        private const string BaseUrl = "https://owner-api.teslamotors.com/api/1/";
-        public static readonly string Version = "1.1.0";
+        public const string LoginUrl = "https://owner-api.teslamotors.com/oauth/";
+        public const string BaseUrl = "https://owner-api.teslamotors.com/api/1/";
+        public const string Version = "1.1.0";
 
         public TeslaClient(string email, string teslaClientId, string teslaClientSecret)
         {
@@ -64,7 +64,7 @@ namespace TeslaLib
                 throw new AuthenticationException("Invalid token. Email or password is incorrect");
             }
 
-            Client.Token = token.AccessToken;
+            Client.SetToken(token.AccessToken);
         }
 
         public void ClearLoginTokenCache() => LoginTokenCache.ClearCache();
